@@ -69,8 +69,11 @@ public:
 
   T get(int r, int c) const { return (_data[r * _cols + c]); }
 
-  /* init identify */
-  Matrix<T> eye(int r, c);
+  /* init square identity */
+  Matrix<T> eye(int d) {
+    init(d, d);
+    for(int i = 0; i < d; i++) _data[i * d + i];
+  }
 
   /* Matrix scalar operations */
   Matrix<T> operator+(const T &c);
