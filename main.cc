@@ -3,8 +3,8 @@
 int main(int argc, char **argv) {
   // proc args
   // input image
-  // create vectors
-  // cluster vectors
+  // create vectors as Matrix
+  // cluster vectors creating Matrix and labels
   // render vectors into new image
   // write output color image with clusters
 

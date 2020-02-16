@@ -1,5 +1,5 @@
-#ifndef _IMAGE_H_
-#define _IMAGE_H_
+#ifndef __IMAGE_H__
+#define __IMAGE_H__
 
 #include <fstream>
 #include <math.h>
@@ -12,28 +12,7 @@ using namespace std;
 #include "cmap.h"
 #include "drawLine.h"
 #include "getLinePts.h"
-
-/* Abstraction of a 2-D vector used as an image pixel type below. */
-struct Vec2f_t {
-  float v[2];
-
-  // initialize to zero
-  Vec2f_t() { v[0] = v[1] = 0.0; }
-
-  // accessor
-  float &operator[](const int i) { return (v[i]); }
-};
-
-/* Abstraction of a RGB color vector used as an image pixel type below. */
-struct RGB_t {
-  unsigned char c[3];
-
-  // initialize to zero
-  RGB_t() { c[0] = c[1] = c[2] = 0; }
-
-  // accessor
-  unsigned char &operator[](const int i) { return (c[i]); }
-};
+#include "Vec.h"
 
 /* Abstraction of a 2-D image with template pixel type. */
 template <typename T> class Image {
@@ -119,4 +98,4 @@ public:
 
 #include "Image.inl"
 
-#endif // _IMAGE_H_
+#endif // __IMAGE_H__
