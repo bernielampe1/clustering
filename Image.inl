@@ -316,12 +316,7 @@ template <> void Image<Vec2f_t>::writeToFile(const string &fname) const {
   delete[] img;
 }
 
-#if 0
-template<>
-void Image<Vec2f_t>::writeToFile(
-  const string &fname
-  ) const
-{
+template <> void Image<Vec2f_t>::writeToFile(const string &fname) const {
   ofstream ofile;
   int spac = 10;
 
@@ -329,10 +324,8 @@ void Image<Vec2f_t>::writeToFile(
   Image<float> img(_height, _width);
 
   // construct the graphical vector field
-  for(int h = 0; h < _height; h += spac)
-  {
-    for(int w = 0; w < _width; w += spac)
-    {
+  for (int h = 0; h < _height; h += spac) {
+    for (int w = 0; w < _width; w += spac) {
       float v = sqrt(_data[h * _width + w][0] * _data[h * _width + w][0] +
                      _data[h * _width + w][1] * _data[h * _width + w][1]);
       img.setPixel(h * _width + w, v);
@@ -341,7 +334,6 @@ void Image<Vec2f_t>::writeToFile(
 
   img.writeToFile(fname);
 }
-#endif
 
 template <typename T>
 void Image<T>::writeToFile(const string &fname, const float *textimg) const {
