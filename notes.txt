@@ -1,0 +1,4 @@
+dbscan, kmeans, fuzzy cmeans, em, mean shift, spectral clustering, normalized cuts...
+cluster an image for segmentation purposes
+add kernels
+multi-threaded
