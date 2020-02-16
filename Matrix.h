@@ -7,7 +7,7 @@
 
 using namespace std;
 
-#include <Vec.h>
+#include "Vec.h"
 
 /* Abstraction of simple dense matrix, not optimized */
 template <typename T> class Matrix {
@@ -39,7 +39,7 @@ public:
         _data[i] = m._data[i];
     }
 
-    return (*this) :
+    return (*this);
   }
 
   ~Matrix() { clear(); }
@@ -72,7 +72,8 @@ public:
   /* init square identity */
   Matrix<T> eye(int d) {
     init(d, d);
-    for(int i = 0; i < d; i++) _data[i * d + i];
+    for (int i = 0; i < d; i++)
+      _data[i * d + i];
   }
 
   /* Matrix scalar operations */

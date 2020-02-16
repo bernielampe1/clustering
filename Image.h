@@ -9,10 +9,8 @@
 using namespace std;
 
 #include "Exception.h"
-#include "cmap.h"
-#include "drawLine.h"
-#include "getLinePts.h"
 #include "Vec.h"
+#include "drawLine.h"
 
 /* Abstraction of a 2-D image with template pixel type. */
 template <typename T> class Image {

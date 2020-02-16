@@ -40,49 +40,54 @@ typedef struct Vec4f_t RGBA_t;
 
 /* Abstraction for large vectors */
 template <typename T> class Vec {
-    private:
-        unsigned _n;
-        T *_data
+private:
+  unsigned _n;
+  T *_data;
 
-    public:
-        Vec(): _n(0), _data(0) { }
+public:
+  Vec() : _n(0), _data(0) {}
 
-        Vec(unsigned int n): _n(n), _data(0) { init(n); }
+  Vec(unsigned int n) : _n(n), _data(0) { init(n); }
 
-        Vec(Vec<T> &v): n(v._n), _data(0) {
-            init(n);
-            for(int = 0; i < v._n; i++) _data[i] = v._data[i];
-        }
+  Vec(Vec<T> &v) : _n(v._n), _data(0) {
+    init(_n);
+    for (int i = 0; i < v._n; i++)
+      _data[i] = v._data[i];
+  }
 
-        Vec<T>& operator=(const Vec<T> &o) {
-            if (this != &o) {
-                _n = o._n;
-                init(o._n);
+  Vec<T> &operator=(const Vec<T> &o) {
+    if (this != &o) {
+      _n = o._n;
+      init(o._n);
 
-                for(unsigned int i = 0; i < o.n; i++) _data[i] = o._data[i];
-            }
+      for (unsigned int i = 0; i < o.n; i++)
+        _data[i] = o._data[i];
+    }
 
-            return(*this);
-        }
+    return (*this);
+  }
 
-        ~Vec() { clear(); }
+  ~Vec() { clear(); }
 
-        void init(const unsigned n) {
-            if (_data) clear;
+  void init(const unsigned n) {
+    if (_data)
+      clear();
 
-            _n = n;
-            _data = new T[_n];
-            for(int i = 0; i < n; i++) _data[i] = 0;
-        }
+    _n = n;
+    _data = new T[_n];
+    for (int i = 0; i < n; i++)
+      _data[i] = 0;
+  }
 
-        void clear() {
-            if (_data) delete [] _data;
-            _n = 0;
-            _data = 0;
-        }
+  void clear() {
+    if (_data)
+      delete[] _data;
+    _n = 0;
+    _data = 0;
+  }
 
-        // accessor
-        T &operator[](const unsigned int i) { return (v[i]); }
+  // accessor
+  T &operator[](const unsigned int i) { return (v[i]); }
 };
 
 #endif // __VEC_H__
