@@ -24,6 +24,6 @@ template <typename T> Matrix<T> inverse()
 
 template <typename T> Matrix<T> transpose()
 
-template <typename T> Matrix<T> T()
+template <typename T> double determinant()
 
 template <typename T> Vec<T> diag()

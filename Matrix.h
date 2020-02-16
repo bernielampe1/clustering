@@ -104,7 +104,7 @@ public:
 
   Matrix<T> transpose();
 
-  Matrix<T> T();
+  double determinant();
 
   Vec<T> diag();
 };
