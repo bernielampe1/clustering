@@ -1,13 +1,13 @@
-template <typename T> void Image<T>::convolve(const float *k, const int ksize) {
+template <typename T> void Image<T>::convolve(const float *k, const u32 ksize) {
   Image<float> temp(_width, _height);
-  int center = ksize >> 1;
+  u32 center = ksize >> 1;
 
   // convolve with 1-D kernel in the x direction
-  for (int h = 0; h < _height; h++) {
-    for (int w = 0; w < _width; w++) {
+  for (s32 h = 0; h < _height; h++) {
+    for (s32 w = 0; w < _width; w++) {
       float d = 0.0;
-      for (int c = -center; c <= center; c++) {
-        int wp = w + c;
+      for (s32 c = -center; c <= center; c++) {
+        s32 wp = w + c;
         if (wp >= 0 && wp < _width)
           d += _data[h * _width + wp] * k[center + c];
       }
@@ -17,11 +17,11 @@ template <typename T> void Image<T>::convolve(const float *k, const int ksize) {
   }
 
   // convolve with 1-D kernel in the y direction
-  for (int h = 0; h < temp._height; h++) {
-    for (int w = 0; w < temp._width; w++) {
+  for (s32 h = 0; h < temp._height; h++) {
+    for (s32 w = 0; w < temp._width; w++) {
       float d = 0.0;
-      for (int c = -center; c <= center; c++) {
-        int wp = w + c;
+      for (s32 c = -center; c <= center; c++) {
+        s32 wp = w + c;
         if (wp >= 0 && wp < temp._width)
           d += temp._data[h * temp._width + wp] * k[center + c];
       }
@@ -32,23 +32,23 @@ template <typename T> void Image<T>::convolve(const float *k, const int ksize) {
 }
 
 template <typename T>
-void Image<T>::convolve(const float *k, const int kheight, const int kwidth) {
+void Image<T>::convolve(const float *k, const u32 kheight, const u32 kwidth) {
   Image<float> temp(_height, _width);
 
   // special case if the ksize is even
-  int kheightp = (kheight % 2) ? kheight : kheight - 1;
-  int kwidthp = (kwidth % 2) ? kwidth : kwidth - 1;
+  s32 kheightp = (kheight % 2) ? kheight : kheight - 1;
+  s32 kwidthp = (kwidth % 2) ? kwidth : kwidth - 1;
 
   // convolve with 2-D kernel
-  for (int h = 0; h < _height; h++) {
-    for (int w = 0; w < _width; w++) {
+  for (s32 h = 0; h < _height; h++) {
+    for (s32 w = 0; w < _width; w++) {
       float d = 0.0; // kernel accumulator
 
       // loop over kernel
-      for (int i = 0; i < kheight; i++) {
-        for (int j = 0; j < kwidth; j++) {
-          int hp = h + i - (kheightp >> 1);
-          int wp = w + j - (kwidthp >> 1);
+      for (s32 i = 0; i < kheight; i++) {
+        for (s32 j = 0; j < kwidth; j++) {
+          s32 hp = h + i - (kheightp >> 1);
+          s32 wp = w + j - (kwidthp >> 1);
 
           if (hp >= 0 && hp < _height && wp >= 0 && wp < _width) {
             d += _data[hp * _width + wp] * k[i * kwidth + j];
@@ -67,11 +67,8 @@ void Image<T>::convolve(const float *k, const int kheight, const int kwidth) {
 template <typename T> Image<T> Image<T>::operator+(const Image<T> &im) const {
   Image<T> temp(_height, _width);
 
-  for (int h = 0; h < _height; h++) {
-    for (int w = 0; w < _width; w++) {
-      int ind = h * _width + w;
-      temp._data[ind] = _data[ind] + im._data[ind];
-    }
+  for (u32 i = 0; i < _height * _width; i++) {
+    temp._data[i] = _data[i] + im._data[i];
   }
 
   return (temp);
@@ -80,11 +77,8 @@ template <typename T> Image<T> Image<T>::operator+(const Image<T> &im) const {
 template <typename T> Image<T> Image<T>::operator-(const Image<T> &im) const {
   Image<T> temp(_height, _width);
 
-  for (int h = 0; h < _height; h++) {
-    for (int w = 0; w < _width; w++) {
-      int ind = h * _width + w;
-      temp._data[ind] = _data[ind] - im._data[ind];
-    }
+  for (u32 i = 0; i < _height * _width; i++) {
+    temp._data[i] = _data[i] - im._data[i];
   }
 
   return (temp);
@@ -93,120 +87,21 @@ template <typename T> Image<T> Image<T>::operator-(const Image<T> &im) const {
 template <typename T> Image<T> Image<T>::operator*(const Image<T> &im) const {
   Image<T> temp(_height, _width);
 
-  for (int h = 0; h < _height; h++) {
-    for (int w = 0; w < _width; w++) {
-      int ind = h * _width + w;
-      temp._data[ind] = _data[ind] * im._data[ind];
-    }
+  for (u32 i = 0; i < _height * _width; i++) {
+    temp._data[i] = _data[i] * im._data[i];
   }
 
   return (temp);
 }
 
-template <typename T> Image<T> Image<T>::operator*(const T &val) const {
-  Image<T> temp(_height, _width);
-
-  for (int h = 0; h < _height; h++) {
-    for (int w = 0; w < _width; w++) {
-      int ind = h * _width + w;
-      temp._data[ind] = _data[ind] * val;
-    }
-  }
-
-  return (temp);
-}
-
-template <typename T>
-void Image<T>::pyramid(const int levels, vector<Image<T>> &py) const {
-  float a = 0.375;
-  float k[] = {0.25 - a / 2.0, 0.25, a, 0.25, 0.25 - a / 2.0};
-  Image<T> temp;
-
-  py.clear();          // clear return vector
-  py.push_back(*this); // add first level
-
-  int hp = _height;
-  int wp = _width;
-  for (int l = 1; l < levels; l++) {
-    // alloc new image with 1/2 dim.
-    hp = ceil(hp / 2.0);
-    wp = ceil(wp / 2.0);
-    temp.init(hp, wp);
-
-    // filter last image
-    Image<T> &t = py.back();
-    t.convolve(k, 5);
-
-    // subsample last image
-    for (int h = 0; h < temp.height(); h++) {
-      for (int w = 0; w < temp.width(); w++) {
-        int h_2 = 2 * h;
-        int w_2 = 2 * w;
-        temp._data[h * temp.width() + w] = t.getPixel(h_2 * t.width() + w_2);
-      }
-    }
-
-    py.push_back(temp);
-  }
-}
-
-template <typename T> T Image<T>::bilinear(const float h, const float w) const {
-  int lr = int(h);
-  int ur = lr + 1;
-
-  int lc = int(w);
-  int uc = lc + 1;
-
-  if (ur >= _height) {
-    lr--;
-    ur--;
-  }
-  if (uc >= _width) {
-    lc--;
-    uc--;
-  }
-
-  T v0 = _data[lr * _width + lc];
-  T v1 = _data[lr * _width + uc];
-  T v2 = _data[ur * _width + lc];
-  T v3 = _data[ur * _width + uc];
-
-  T t0 = (uc - w) * v0 + (w - lc) * v1;
-  T t1 = (uc - w) * v2 + (w - lc) * v3;
-
-  return ((ur - h) * t0 + (h - lr) * t1);
-}
-
-template <typename T> void Image<T>::readFromFile(const string &fname) {
+template <typename T> void Image<T>::readFromFile(const std::string &fname) {
   throw Exception("not implemented");
 }
 
-template <> void Image<unsigned char>::readFromFile(const string &fname) {
-  ifstream ifile;
-  string magic, cols, rows, max;
-  unsigned char p
-
-      ifile.open(fname.c_str());
-  if (!ifile) {
-    throw Exception("could not read from file");
-  }
-
-  ifile >> magic >> cols >> rows >> max;
-  init(atoi(rows.c_str()), atoi(cols.c_str()));
-
-  for (int i = 0; i < _width * _height; i++) {
-    ifile.read((char *)&p, sizeof(unsigned char));
-
-    _data[i] = p;
-  }
-
-  ifile.close();
-}
-
-template <> void Image<RGB_t>::readFromFile(const string &fname) {
-  ifstream ifile;
-  string magic, cols, rows, max;
-  unsigned char r, g, b;
+template <> void Image<u8>::readFromFile(const std::string &fname) {
+  std::ifstream ifile;
+  std::string magic, cols, rows, max;
+  u8 p;
 
   ifile.open(fname.c_str());
   if (!ifile) {
@@ -214,12 +109,38 @@ template <> void Image<RGB_t>::readFromFile(const string &fname) {
   }
 
   ifile >> magic >> cols >> rows >> max;
-  init(atoi(rows.c_str()), atoi(cols.c_str()));
+  if (magic != "P5")
+    throw Exception("image needs to be P5 pgm");
 
-  for (int i = 0; i < _width * _height; i++) {
-    ifile.read((char *)&r, sizeof(unsigned char));
-    ifile.read((char *)&g, sizeof(unsigned char));
-    ifile.read((char *)&b, sizeof(unsigned char));
+  init(atoi(rows.c_str()), atoi(cols.c_str()));
+  for (u32 i = 0; i < _width * _height; i++) {
+    ifile.read((s8 *)&p, sizeof(u8));
+
+    _data[i] = p;
+  }
+
+  ifile.close();
+}
+
+template <> void Image<RGB_t>::readFromFile(const std::string &fname) {
+  std::ifstream ifile;
+  std::string magic, cols, rows, max;
+  u8 r, g, b;
+
+  ifile.open(fname.c_str());
+  if (!ifile) {
+    throw Exception("could not read from file");
+  }
+
+  ifile >> magic >> cols >> rows >> max;
+  if (magic != "P6")
+    throw Exception("image needs to be a P6 ppm");
+
+  init(atoi(rows.c_str()), atoi(cols.c_str()));
+  for (u32 i = 0; i < _width * _height; i++) {
+    ifile.read((s8*)&r, sizeof(u8));
+    ifile.read((s8*)&g, sizeof(u8));
+    ifile.read((s8 *)&b, sizeof(u8));
 
     _data[i][0] = r;
     _data[i][1] = g;
@@ -229,18 +150,18 @@ template <> void Image<RGB_t>::readFromFile(const string &fname) {
   ifile.close();
 }
 
-template <typename T> void Image<T>::writeToFile(const string &fname) const {
+template <typename T> void Image<T>::writeToFile(const std::string &fname) const {
   T minVal, maxVal;
   float scaleVal;
-  ofstream ofile;
-  int numElems = _height * _width;
+  std::ofstream ofile;
+  u32 numElems = _height * _width;
 
   if (numElems <= 0) {
     throw(Exception("cannot write a null image object to file"));
   }
 
   minVal = maxVal = _data[0];
-  for (int i = 1; i < numElems; i++) {
+  for (u32 i = 1; i < numElems; i++) {
     if (minVal > _data[i])
       minVal = _data[i];
     if (maxVal < _data[i])
@@ -255,17 +176,17 @@ template <typename T> void Image<T>::writeToFile(const string &fname) const {
   }
 
   ofile << "P5\n" << _width << " " << _height << "\n255\n";
-  for (int i = 0; i < numElems; i++) {
-    unsigned char val = (unsigned char)((_data[i] - minVal) * scaleVal + 0.5);
-    ofile.write((char *)&val, sizeof(unsigned char));
+  for (u32 i = 0; i < numElems; i++) {
+    u8 val = (u8)((_data[i] - minVal) * scaleVal + 0.5);
+    ofile.write((s8 *)&val, sizeof(u8));
   }
 
   ofile.close();
 }
 
-template <> void Image<RGB_t>::writeToFile(const string &fname) const {
-  ofstream ofile;
-  int numElems = _height * _width;
+template <> void Image<RGB_t>::writeToFile(const std::string &fname) const {
+  std::ofstream ofile;
+  u32 numElems = _height * _width;
 
   ofile.open(fname.c_str());
   if (!ofile) {
@@ -273,31 +194,31 @@ template <> void Image<RGB_t>::writeToFile(const string &fname) const {
   }
 
   ofile << "P6" << endl << _width << " " << _height << endl << "255" << endl;
-  for (int i = 0; i < numElems; i++) {
-    ofile.write((char *)&(_data[i][0]), sizeof(unsigned char));
-    ofile.write((char *)&(_data[i][1]), sizeof(unsigned char));
-    ofile.write((char *)&(_data[i][2]), sizeof(unsigned char));
+  for (u32 i = 0; i < numElems; i++) {
+    ofile.write((s8 *)&(_data[i][0]), sizeof(u8));
+    ofile.write((s8 *)&(_data[i][1]), sizeof(u8));
+    ofile.write((s8 *)&(_data[i][2]), sizeof(u8));
   }
 
   ofile.close();
 }
 
-template <> void Image<Vec2f_t>::writeToFile(const string &fname) const {
-  ofstream ofile;
-  int spac = 10;
+template <> void Image<Vec2f_t>::writeToFile(const std::string &fname) const {
+  std::ofstream ofile;
+  s8 spac = 10;
 
   // allocate space
-  unsigned char *img = new unsigned char[_height * _width];
-  memset(img, 0, _height * _width * sizeof(unsigned char));
+  u8 *img = new u8[_height * _width];
+  memset(img, 0, _height * _width * sizeof(u8));
 
   // construct the graphical vector field
-  for (int h = 0; h < _height; h += spac) {
-    for (int w = 0; w < _width; w += spac) {
-      int ex = w + _data[h * _width + w][0];
-      int ey = h + _data[h * _width + w][1];
+  for (s32 h = 0; h < _height; h += spac) {
+    for (s32 w = 0; w < _width; w += spac) {
+      s8 ex = w + _data[h * _width + w][0];
+      s8 ey = h + _data[h * _width + w][1];
 
       if (ex >= 0 && ex < _width && ey >= 0 && ey < _height) {
-        drawLine(w, h, ex, ey, (unsigned char)255, _height, _width, img);
+        drawLine(w, h, ex, ey, (u8)255, _height, _width, img);
       }
     }
   }
@@ -310,194 +231,8 @@ template <> void Image<Vec2f_t>::writeToFile(const string &fname) const {
 
   // write to file
   ofile << "P5" << endl << _width << " " << _height << endl << "255" << endl;
-  ofile.write((char *)img, _width * _height * sizeof(unsigned char));
+  ofile.write((s8 *)img, _width * _height * sizeof(u8));
   ofile.close();
 
   delete[] img;
-}
-
-template <> void Image<Vec2f_t>::writeToFile(const string &fname) const {
-  ofstream ofile;
-  int spac = 10;
-
-  // allocate space
-  Image<float> img(_height, _width);
-
-  // construct the graphical vector field
-  for (int h = 0; h < _height; h += spac) {
-    for (int w = 0; w < _width; w += spac) {
-      float v = sqrt(_data[h * _width + w][0] * _data[h * _width + w][0] +
-                     _data[h * _width + w][1] * _data[h * _width + w][1]);
-      img.setPixel(h * _width + w, v);
-    }
-  }
-
-  img.writeToFile(fname);
-}
-
-template <typename T>
-void Image<T>::writeToFile(const string &fname, const float *textimg) const {
-  throw Exception("not implemented");
-}
-
-template <>
-void Image<Vec2f_t>::writeToFile(const string &fname,
-                                 const float *textimg) const {
-  ofstream ofile;
-  vector<int> p_x, p_y;
-  int p0_x, p0_y, p1_x, p1_y;
-  float dist = 5.0;
-
-  // allocate space
-  float *accimg = new float[_height * _width];
-  memset(accimg, 0, _height * _width * sizeof(float));
-
-  // allocate space for magnitudes
-  float *magimg = new float[_height * _width];
-  memset(magimg, 0, _height * _width * sizeof(float));
-
-  // integrate vectors
-  float v, mag, sqrt_2 = sqrt(2.0);
-  for (int h = 0; h < _height; h++) {
-    for (int w = 0; w < _width; w++) {
-      mag = sqrt(_data[h * _width + w][0] * _data[h * _width + w][0] +
-                 _data[h * _width + w][1] * _data[h * _width + w][1]);
-
-      // remove vectors less than one 8-connected pixel
-      if (mag < sqrt_2)
-        continue;
-
-      magimg[h * _width + w] = mag;
-
-      p0_x = int(w + _data[h * _width + w][0] / mag * dist + 0.5);
-      p0_y = int(h + _data[h * _width + w][1] / mag * dist + 0.5);
-      p1_x = int(w - _data[h * _width + w][0] / mag * dist + 0.5);
-      p1_y = int(h - _data[h * _width + w][1] / mag * dist + 0.5);
-
-      getLinePts(p0_x, p0_y, p1_x, p1_y, p_x, p_y);
-
-      v = 0;
-      for (unsigned i = 0; i < p_x.size(); i++) {
-        int hp = p_y[i];
-        int wp = p_x[i];
-
-        if (hp >= 0 && hp < _height && wp >= 0 && wp < _width) {
-          v += textimg[hp * _width + wp];
-        }
-      }
-
-      accimg[h * _width + w] = v;
-    }
-  }
-
-  // convolve vector directions with strength
-  for (int i = 0; i < _width * _height; i++) {
-    accimg[i] *= magimg[i];
-  }
-
-  // get stats
-  float min = accimg[0];
-  float max = accimg[0];
-  for (int i = 0; i < _width * _height; i++) {
-    if (min > accimg[i])
-      min = accimg[i];
-    if (max < accimg[i])
-      max = accimg[i];
-  }
-
-  // open file and check
-  ofile.open(fname.c_str());
-  if (!ofile) {
-    throw(Exception("unable to open file for writing"));
-  }
-
-  ofile << "P6\n" << _width << " " << _height << "\n255\n";
-
-  // scale factor
-  float scale = 1.0;
-  if (max - min > 0.01)
-    scale = 255.0 / (max - min);
-
-  // write to file
-  for (int i = 0; i < _width * _height; i++) {
-    unsigned char val;
-    val = scale * (accimg[i] - min) + 0.5;
-    ofile.write((char *)&jetBlackMap[val][0], sizeof(unsigned char));
-    ofile.write((char *)&jetBlackMap[val][1], sizeof(unsigned char));
-    ofile.write((char *)&jetBlackMap[val][2], sizeof(unsigned char));
-  }
-
-  ofile.close();
-
-  delete[] accimg;
-}
-
-Image<float> *getChannel(const Image<RGB_t> *img, const int &n) {
-  Image<float> *rtn = new Image<float>(img->height(), img->width());
-  int numElems = img->height() * img->width();
-  float v;
-
-  for (int i = 0; i < numElems; i++) {
-    v = (float)((img->getPixel(i))[n]);
-    rtn->setPixel(i, v);
-  }
-
-  return (rtn);
-}
-
-Image<float> *getChannel(const Image<Vec2f_t> *img, const int &n) {
-  Image<float> *rtn = new Image<float>(img->height(), img->width());
-  int numElems = img->height() * img->width();
-  float v;
-
-  for (int i = 0; i < numElems; i++) {
-    v = img->getPixel(i).v[n];
-    rtn->setPixel(i, v);
-  }
-
-  return (rtn);
-}
-
-Image<float> *computeBrightness(const Image<RGB_t> *im) {
-  Image<float> *rtn = new Image<float>(im->height(), im->width());
-  int numElems = im->height() * im->width();
-  float v;
-
-  for (int i = 0; i < numElems; i++) {
-    v = 0.0;
-    for (int j = 0; j < 3; j++) {
-      v += im->getPixel(i).c[j] * im->getPixel(i).c[j];
-    }
-    rtn->setPixel(i, sqrt(v));
-  }
-
-  return (rtn);
-}
-
-// compute magnitude and direction channels
-Image<float> *getMagnitude(const Image<Vec2f_t> *vfield) {
-  Image<float> *rtn = new Image<float>(vfield->height(), vfield->width());
-  int numElems = vfield->height() * vfield->width();
-
-  for (int i = 0; i < numElems; i++) {
-    float v = vfield->getPixel(i).v[0] * vfield->getPixel(i).v[0] +
-              vfield->getPixel(i).v[1] * vfield->getPixel(i).v[1];
-
-    rtn->setPixel(i, sqrt(v));
-  }
-
-  return (rtn);
-}
-
-// compute magnitude and direction channels
-Image<float> *getDirection(const Image<Vec2f_t> *vfield) {
-  Image<float> *rtn = new Image<float>(vfield->height(), vfield->width());
-  int numElems = vfield->height() * vfield->width();
-
-  for (int i = 0; i < numElems; i++) {
-    float v = atan2(vfield->getPixel(i).v[1], vfield->getPixel(i).v[0]);
-    rtn->setPixel(i, v);
-  }
-
-  return (rtn);
 }

@@ -16,4 +16,5 @@ format:
 
 .PHONY: clean
 clean:
-	rm -f *.o $(BIN)
+	rm -rf *.o *.dSYM $(BIN)
+

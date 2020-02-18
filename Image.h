@@ -2,26 +2,23 @@
 #define __IMAGE_H__
 
 #include <fstream>
-#include <math.h>
-#include <string.h>
-#include <vector>
+#include <string>
 
-using namespace std;
-
+#include "drawLine.h"
+#include "types.h"
 #include "Exception.h"
 #include "Vec.h"
-#include "drawLine.h"
 
 /* Abstraction of a 2-D image with template pixel type. */
 template <typename T> class Image {
 private:
   T *_data;            // dynamic data storage for 2-D array of pixel
-  int _height, _width; // image dimensions
+  u32 _height, _width; // image dimensions
 
 public:
   Image() : _data(0), _height(0), _width(0) {}
 
-  Image(const int h, const int w) : _data(0), _height(h), _width(w) {
+  Image(const u32 h, const u32 w) : _data(0), _height(h), _width(w) {
     init(_height, _width);
   }
 
@@ -32,7 +29,7 @@ public:
 
   ~Image() { clear(); }
 
-  void init(const int h, const int w) {
+  void init(const u32 h, const u32 w) {
     if (_data) {
       clear();
     }
@@ -50,9 +47,9 @@ public:
     _data = 0;
   }
 
-  int height() const { return (_height); }
+  u32 height() const { return (_height); }
 
-  int width() const { return (_width); }
+  u32 width() const { return (_width); }
 
   Image<T> &operator=(const Image<T> &rhs) {
     if (this != &rhs) {
@@ -65,19 +62,15 @@ public:
     return (*this);
   }
 
-  T &operator[](const int &i) const { return (_data[i]); }
+  T& operator[](const u32 i) const { return (_data[i]); }
 
-  T &get(const int ind) const { return (_data[ind]); }
+  T& get(const u32 i) const { return (_data[i]); }
 
-  void set(const int ind, const T &val) { _data[ind] = val; }
+  void set(const u32 i, const T &v) { _data[i] = v; }
 
-  void convolve(const float *k, const int ksize);
+  void convolve(const float *k, const u32 ksize);
 
-  void convolve(const float *k, const int kheight, const int kwidth);
-
-  void pyramid(const int levels, vector<Image<T>> &py) const;
-
-  T bilinear(const float h, const float w) const;
+  void convolve(const float *k, const u32 kheight, const u32 kwidth);
 
   Image<T> operator+(const Image<T> &im) const;
 
@@ -85,13 +78,9 @@ public:
 
   Image<T> operator*(const Image<T> &im) const;
 
-  Image<T> operator*(const T &val) const;
+  void readFromFile(const std::string &fname);
 
-  void readFromFile(const string &fname);
-
-  void writeToFile(const string &fname) const;
-
-  void writeToFile(const string &fname, const float *textimg) const;
+  void writeToFile(const std::string &fname) const;
 };
 
 #include "Image.inl"

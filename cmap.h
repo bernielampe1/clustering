@@ -1,8 +1,10 @@
 #ifndef _CMAP_H_
 #define _CMAP_H_
 
+#include "types.h"
+
 /* "jet" color map from MATLAB. */
-const unsigned char jetMap[256][3] = {
+const u8 jetMap[256][3] = {
     {0, 0, 131},     {0, 0, 135},     {0, 0, 139},     {0, 0, 143},
     {0, 0, 147},     {0, 0, 151},     {0, 0, 155},     {0, 0, 159},
     {0, 0, 163},     {0, 0, 167},     {0, 0, 171},     {0, 0, 175},

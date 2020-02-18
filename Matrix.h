@@ -1,42 +1,34 @@
 #ifndef __MATRIX_H__
 #define __MATRIX_H__
 
-#include <fstream>
-#include <math.h>
-#include <string.h>
-
-using namespace std;
-
+#include "types.h"
 #include "Vec.h"
 
 /* Abstraction of simple dense matrix, not optimized */
 template <typename T> class Matrix {
 private:
-  int _rows, cols; // matrix dimensions
-  T *data;         // columns in row major order
+  T *_data;         // columns in row major order
+  u32 _rows, _cols; // matrix dimensions
 
 public:
-  Matrix()
-      : _rows(0), _cols(0), _data(0)
+  Matrix() : _data(0), _rows(0), _cols(0) { }
 
-                                Matrix(const int r, const int c)
-      : _rows(r), _cols(c), _data(0) {
+  Matrix(const u32 r, const u32 c) : _data(0), _rows(r), _cols(c) {
     init(r, c);
   }
 
-  Matrix(const Matrix<T> &m) : _rows(r), _cols(c), _data(0) {
-    init(r, c);
-    for (unsigned int i = 0; i < _rows * _cols; i++)
+  Matrix(const Matrix<T> &m) : _data(0), _rows(m._rows), _cols(m._cols) {
+    init(_rows, _cols);
+    for (u32 i = 0; i < _rows * _cols; i++)
       _data[i] = m._data[i];
   }
 
-  Matrix<T> &operator=(const Matrix<T> &o) {
-    if (this != &o) {
-      _rows = o._rows;
-      _cols = o._cols;
+  Matrix<T> &operator=(const Matrix<T> &m) {
+    if (this != &m) {
+      _rows = m._rows;
+      _cols = m._cols;
       init(_rows, _cols);
-      for (unsigned int i = 0; i < _rows * _cols; i++)
-        _data[i] = m._data[i];
+      for (u32 i = 0; i < _rows * _cols; i++) _data[i] = m._data[i];
     }
 
     return (*this);
@@ -44,15 +36,13 @@ public:
 
   ~Matrix() { clear(); }
 
-  void init(const int r, const int c, const T v = 0) {
-    if (_data)
-      clear();
+  void init(const u32 r, const u32 c, const T v = 0) {
+    if (_data) clear();
     _rows = r;
     _cols = c;
 
     _data = new T[_rows * _cols];
-    for (int i = 0; i < _rows * _cols; i++)
-      _data[i] = v;
+    for (u32 i = 0; i < _rows * _cols; i++) _data[i] = v;
   }
 
   void clear() {
@@ -63,36 +53,45 @@ public:
   }
 
   /* accessors */
-  int rows() const { return (_rows); }
+  u32 rows() const { return (_rows); }
 
-  int cols() const { return (_rows); }
+  u32 cols() const { return (_cols); }
 
-  T get(int r, int c) const { return (_data[r * _cols + c]); }
+  T& get(u32 r, u32 c) const { return (_data[r * _cols + c]); }
+
+  T& operator[](u32 i) { return (_data[i]); }
 
   /* init square identity */
-  Matrix<T> eye(int d) {
+  Matrix<T> eye(u32 d) {
     init(d, d);
-    for (int i = 0; i < d; i++)
-      _data[i * d + i];
+    for (u32 i = 0; i < d; i++) _data[i * d + i];
   }
 
   /* Matrix scalar operations */
   Matrix<T> operator+(const T &c);
+  Matrix<T>& operator+=(const T &c);
 
   Matrix<T> operator-(const T &c);
+  Matrix<T>& operator-=(const T &c);
 
   Matrix<T> operator*(const T &c);
+  Matrix<T>& operator*=(const T &c);
 
   Matrix<T> operator/(const T &c);
+  Matrix<T>& operator/=(const T &c);
 
   /* Simple composition operators */
   Matrix<T> operator+(const Matrix<T> &m);
+  Matrix<T>& operator+=(const Matrix<T> &m);
 
   Matrix<T> operator-(const Matrix<T> &m);
+  Matrix<T>& operator-=(const Matrix<T> &m);
 
   Matrix<T> operator*(const Matrix<T> &m);
+  Matrix<T>& operator*=(const Matrix<T> &m);
 
   Matrix<T> operator/(const Matrix<T> &m);
+  Matrix<T>& operator/=(const Matrix<T> &m);
 
   /* More complicated composition operations */
   Matrix<T> dot(const Vec<T> &v);

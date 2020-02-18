@@ -4,14 +4,10 @@
 #include <string>
 #include <vector>
 
-using namespace std;
-
+#include "types.h"
+#include "Image.h"
 #include "Matrix.h"
-
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef unsigned int u32;
-typedef long long u64;
+#include "Vec.h"
 
 /*
     - Clustering interface supporting multiple algorithms and up to 255
@@ -29,17 +25,18 @@ typedef long long u64;
    as input vectors
 */
 template <typename S, typename T>
-bool cluster(const string &algo, const Matrix<S> &pts, u8 &labels,
+bool cluster(const std::string &algo, const Matrix<S> &pts, u8 &labels,
              u8 &nclusters, Matrix<T> &clusters);
 
 /* - algorithm vector for used in cluster.cc invocation */
-typedef bool (*invoke)(const string &, const Matrix<S> &, u8 &,
+typedef template <typename S, typename T>
+bool (*invoke)(const std::string &, const Matrix<S> &, u8 &,
                        Matrix<T> &) InvokePrototype;
 
 struct CAlgorithm {
-  CAlgorithm(string &n, InvokePrototype f) : name(n), invoke(f);
+  CAlgorithm(std::string &n, InvokePrototype f) : name(n), invoke(f);
 
-  string name;
+  std::string name;
   InvokePrototype invoke;
 };
 
@@ -63,7 +60,7 @@ static const vector<struct ClusteringAlgo> clusterAlgoritms({
 
 // one point per row of Matrix pts, supports up to 255 clusters
 template <typename S = float, typename T = float>
-bool cluster(const string &algo, const Matrix<S> &pts, u8 &labels,
+bool cluster(const std::string &algo, const Matrix<S> &pts, u8 &labels,
              u8 &nclusters, Matrix<T> &clusters) {
   for (auto it = clusterAlgorithms; it != clusterAlgorithms.end; it++) {
     if (it->name == algo) {
