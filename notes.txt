@@ -1,8 +1,8 @@
-implement inverse for Matrix
+implement determinant for Matrix
 
 unit tests for Vec, Matrix and Image
 
-implement kmeans as first algo adn write test
+implement kmeans as first algo and write test
 
 fill out main.cc, args, reading images, clustering, rendering output
 

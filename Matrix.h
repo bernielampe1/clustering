@@ -1,6 +1,8 @@
 #ifndef __MATRIX_H__
 #define __MATRIX_H__
 
+#include <math>
+
 #include "Vec.h"
 #include "types.h"
 
@@ -127,15 +129,29 @@ public:
 
   Matrix<T> dot(const Matrix<T> &m);
 
-  Matrix<T> cofactor(const u32 &r, const u32 &c);
+  // perform LUP decomp
+  void decompLUP(Matrix<T> &L, Matrix<T> &U, u32 &P);
 
-  Matrix<T> determinant();
+  // return cofactor matrix
+  Matrix<T> cofactor(const u32 &rp, const u32 &cp);
 
+  // return adjoint matrix
   Matrix<T> adjoint();
 
-  Matrix<T> inverse();
+  // compute determinant using LUP decomp
+  T determinant();
 
-  Vec<T> solve(const Vec<T> &b);
+  // invert using adjoint matrix
+  Matrix<T> inverse_1();
+
+  // solve using kramer's method
+  Vec<T> solve_1(const Vec<T> &b);
+
+  // invert using LUP decomp
+  Matrix<T> inverse_2();
+
+  // solve using LUP decomp
+  Vec<T> solve_2(const Vec<T> &b);
 };
 
 #include "Matrix.inl"

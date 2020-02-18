@@ -1,6 +1,8 @@
 #ifndef __VEC_H__
 #define __VEC_H__
 
+#include "types.h"
+
 /* Abstraction of a 2-D vector float */
 struct Vec2f_t {
   float v[2];
@@ -100,6 +102,10 @@ public:
   T &operator[](const u32 i) { return (_data[i]); }
 
   u32 len() { return _n; }
+
+  T sum();
+  T prod();
+  Vec<T> abs();
 
   /* Vec scalar operations */
   Vec<T> operator+(const T &c);
