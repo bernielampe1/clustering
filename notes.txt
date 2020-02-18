@@ -1,4 +1,13 @@
-dbscan, kmeans, fuzzy cmeans, em, mean shift, spectral clustering, normalized cuts...
-cluster an image for segmentation purposes
-add kernels
-multi-threaded
+implement inverse for Matrix
+
+unit tests for Vec, Matrix and Image
+
+implement kmeans as intro
+
+fill out main.cc, args, reading images, clustering, rendering output
+
+implement dbscan, fuzzy cmeans, em, mean shift, spectral clustering, normalized cuts...
+
+add clustering implementations with kernels
+
+add multi-threaded clustering implementations

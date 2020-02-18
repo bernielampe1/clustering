@@ -159,5 +159,5 @@ Vec<T> Matrix<T>::diag() {
 
 template <typename T>
 Matrix<T> Matrix<T>::inverse() {
-
+    
 }

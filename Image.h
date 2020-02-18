@@ -27,16 +27,21 @@ public:
     memcpy(_data, o._data, _height * _width * sizeof(T));
   }
 
+  Image(Image<T> &&o) : _data(o._data), _height(o._height), _width(o._width) {
+    o._data = 0;
+    o._height = o._width = 0;
+  }
+
   ~Image() { clear(); }
 
   void init(const u32 h, const u32 w) {
-    if (_data) {
-      clear();
-    }
+    T *temp = new T[h * w];
+
+    if (_data) clear();
 
     _height = h;
     _width = w;
-    _data = new T[_height * _width]; // row major
+    _data = temp;
     memset(_data, 0, _height * _width * sizeof(T));
   }
 
@@ -51,15 +56,28 @@ public:
 
   u32 width() const { return (_width); }
 
-  Image<T> &operator=(const Image<T> &rhs) {
-    if (this != &rhs) {
-      _height = rhs._height;
-      _width = rhs._width;
-      init(_height, _width);
-      memcpy(_data, rhs._data, _height * _width * sizeof(T));
+  Image<T> &operator=(const Image<T> &o) {
+    if (this != &o) {
+      init(o._height, o._width);
+      memcpy(_data, o._data, _height * _width * sizeof(T));
     }
 
-    return (*this);
+    return *this;
+  }
+
+  Image<T> &operator=(Image<T> &&o) {
+    if (this != &o) {
+      if (_data) clear();
+
+      _data = o._data;
+      _height = o._height;
+      _width = o._width;
+
+      o._data = 0;
+      o._rows = o._cols = 0;
+    }
+
+    return *this;
   }
 
   T& operator[](const u32 i) const { return (_data[i]); }

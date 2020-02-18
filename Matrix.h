@@ -23,25 +23,45 @@ public:
       _data[i] = m._data[i];
   }
 
+  Matrix<T>(Matrix<T> &&m) : _data(m._data), _rows(m._rows), _cols(m._cols) {
+    m._data = 0;
+    m._rows = m._cols = 0;
+  }
+
   Matrix<T> &operator=(const Matrix<T> &m) {
     if (this != &m) {
-      _rows = m._rows;
-      _cols = m._cols;
-      init(_rows, _cols);
+      init(m._rows, m._cols);
       for (u32 i = 0; i < _rows * _cols; i++) _data[i] = m._data[i];
     }
 
-    return (*this);
+    return *this;
+  }
+
+  Matrix<T> &operator=(Matrix<T> &&m) {
+    if (this != &m) {
+      if (_data) clear();
+
+      _data = m._data;
+      _rows = m._rows;
+      _cols = m._cols;
+
+      m._data = 0;
+      m._rows = m._cols = 0;
+    }
+
+    return *this;
   }
 
   ~Matrix() { clear(); }
 
   void init(const u32 r, const u32 c, const T v = 0) {
+    T *temp = new T[r * c];
+
     if (_data) clear();
     _rows = r;
     _cols = c;
+    _data = temp;
 
-    _data = new T[_rows * _cols];
     for (u32 i = 0; i < _rows * _cols; i++) _data[i] = v;
   }
 
@@ -100,13 +120,9 @@ public:
 
   Matrix<T> transpose();
 
-  Vec<T> diag();
-
   Matrix<T> inverse();
 
-  Matrix<T> adj();
-
-  T det();
+  Vec<T> diag();
 };
 
 #include "Matrix.inl"
