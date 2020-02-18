@@ -137,6 +137,17 @@ Matrix<T> Matrix<T>::dot(const Matrix<T> &m) {
 }
 
 template <typename T>
+Matrix<T> Matrix<T>::transpose() {
+    Matrix<T> temp(_cols, _rows);
+    for(u32 r = 0; r < _rows; r++) {
+        for(u32 c = 0; c < _cols; c++) {
+            temp._data[c * _rows + r] = _data[r * _cols + c];
+        }
+    }
+    return temp;
+}
+
+template <typename T>
 Vec<T> Matrix<T>::diag() {
     if (_rows != _cols)
         throw Exception("matrix is not square");
@@ -144,4 +155,9 @@ Vec<T> Matrix<T>::diag() {
     Vec<T> v(_rows * _cols);
     for(u32 i = 0; i < _rows * _cols; i++) v[i] = _data[i * _cols + i];
     return v;
+}
+
+template <typename T>
+Matrix<T> Matrix<T>::inverse() {
+
 }

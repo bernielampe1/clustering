@@ -1,5 +1,5 @@
 CC := g++
-CFLAGS := -g -Wall
+CFLAGS := -g -Wall -std=c++11
 
 BIN := cluster
 SRCS := main.cc
@@ -8,7 +8,7 @@ SRCS := main.cc
 all: $(BIN)
 
 $(BIN): $(SRCS)
-	$(CC) $(FLAGS) $^ -o $@
+	$(CC) $(CFLAGS) $^ -o $@
 
 .PHONY: format
 format:

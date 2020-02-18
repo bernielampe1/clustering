@@ -98,7 +98,15 @@ public:
 
   Matrix<T> dot(const Matrix<T> &m);
 
+  Matrix<T> transpose();
+
   Vec<T> diag();
+
+  Matrix<T> inverse();
+
+  Matrix<T> adj();
+
+  T det();
 };
 
 #include "Matrix.inl"
