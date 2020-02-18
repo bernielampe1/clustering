@@ -1,8 +1,8 @@
 #ifndef __MATRIX_H__
 #define __MATRIX_H__
 
-#include "types.h"
 #include "Vec.h"
+#include "types.h"
 
 /* Abstraction of simple dense matrix, not optimized */
 template <typename T> class Matrix {
@@ -11,7 +11,7 @@ private:
   u32 _rows, _cols; // matrix dimensions
 
 public:
-  Matrix() : _data(0), _rows(0), _cols(0) { }
+  Matrix() : _data(0), _rows(0), _cols(0) {}
 
   Matrix(const u32 r, const u32 c) : _data(0), _rows(r), _cols(c) {
     init(r, c);
@@ -31,7 +31,8 @@ public:
   Matrix<T> &operator=(const Matrix<T> &m) {
     if (this != &m) {
       init(m._rows, m._cols);
-      for (u32 i = 0; i < _rows * _cols; i++) _data[i] = m._data[i];
+      for (u32 i = 0; i < _rows * _cols; i++)
+        _data[i] = m._data[i];
     }
 
     return *this;
@@ -39,7 +40,8 @@ public:
 
   Matrix<T> &operator=(Matrix<T> &&m) {
     if (this != &m) {
-      if (_data) clear();
+      if (_data)
+        clear();
 
       _data = m._data;
       _rows = m._rows;
@@ -57,12 +59,14 @@ public:
   void init(const u32 r, const u32 c, const T v = 0) {
     T *temp = new T[r * c];
 
-    if (_data) clear();
+    if (_data)
+      clear();
     _rows = r;
     _cols = c;
     _data = temp;
 
-    for (u32 i = 0; i < _rows * _cols; i++) _data[i] = v;
+    for (u32 i = 0; i < _rows * _cols; i++)
+      _data[i] = v;
   }
 
   void clear() {
@@ -77,41 +81,42 @@ public:
 
   u32 cols() const { return (_cols); }
 
-  T& get(u32 r, u32 c) const { return (_data[r * _cols + c]); }
+  T &get(u32 r, u32 c) const { return (_data[r * _cols + c]); }
 
-  T& operator[](u32 i) { return (_data[i]); }
+  T &operator[](u32 i) { return (_data[i]); }
 
   /* init square identity */
   Matrix<T> eye(u32 d) {
     init(d, d);
-    for (u32 i = 0; i < d; i++) _data[i * d + i];
+    for (u32 i = 0; i < d; i++)
+      _data[i * d + i];
   }
 
   /* Matrix scalar operations */
   Matrix<T> operator+(const T &c);
-  Matrix<T>& operator+=(const T &c);
+  Matrix<T> &operator+=(const T &c);
 
   Matrix<T> operator-(const T &c);
-  Matrix<T>& operator-=(const T &c);
+  Matrix<T> &operator-=(const T &c);
 
   Matrix<T> operator*(const T &c);
-  Matrix<T>& operator*=(const T &c);
+  Matrix<T> &operator*=(const T &c);
 
   Matrix<T> operator/(const T &c);
-  Matrix<T>& operator/=(const T &c);
+  Matrix<T> &operator/=(const T &c);
 
   /* Simple composition operators */
   Matrix<T> operator+(const Matrix<T> &m);
-  Matrix<T>& operator+=(const Matrix<T> &m);
+  Matrix<T> &operator+=(const Matrix<T> &m);
 
   Matrix<T> operator-(const Matrix<T> &m);
-  Matrix<T>& operator-=(const Matrix<T> &m);
+  Matrix<T> &operator-=(const Matrix<T> &m);
 
   Matrix<T> operator*(const Matrix<T> &m);
-  Matrix<T>& operator*=(const Matrix<T> &m);
+  Matrix<T> &operator*=(const Matrix<T> &m);
 
   Matrix<T> operator/(const Matrix<T> &m);
-  Matrix<T>& operator/=(const Matrix<T> &m);
+  Matrix<T> &operator/=(const Matrix<T> &m);
 
   /* More advanced composition operations */
   Matrix<T> transpose();

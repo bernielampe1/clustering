@@ -4,10 +4,10 @@
 #include <string>
 #include <vector>
 
-#include "types.h"
 #include "Image.h"
 #include "Matrix.h"
 #include "Vec.h"
+#include "types.h"
 
 /*
     - Clustering interface supporting multiple algorithms and up to 255
@@ -32,11 +32,10 @@ bool cluster(const std::string &algo, const Matrix<S> &pts, u8 &labels,
 #include "dbscan.h"
 #include "em.h"
 #include "fuzzy.h"
+#include "kmeans.h"
 #include "meanshift.h"
 #include "ncuts.h"
 #include "spectral.h" */
-#include "kmeans.h"
-
 
 // one point per row of Matrix pts, supports up to 255 clusters
 template <typename S = float, typename T = float>

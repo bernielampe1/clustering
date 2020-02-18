@@ -138,8 +138,8 @@ template <> void Image<RGB_t>::readFromFile(const std::string &fname) {
 
   init(atoi(rows.c_str()), atoi(cols.c_str()));
   for (u32 i = 0; i < _width * _height; i++) {
-    ifile.read((s8*)&r, sizeof(u8));
-    ifile.read((s8*)&g, sizeof(u8));
+    ifile.read((s8 *)&r, sizeof(u8));
+    ifile.read((s8 *)&g, sizeof(u8));
     ifile.read((s8 *)&b, sizeof(u8));
 
     _data[i][0] = r;
@@ -150,7 +150,8 @@ template <> void Image<RGB_t>::readFromFile(const std::string &fname) {
   ifile.close();
 }
 
-template <typename T> void Image<T>::writeToFile(const std::string &fname) const {
+template <typename T>
+void Image<T>::writeToFile(const std::string &fname) const {
   T minVal, maxVal;
   float scaleVal;
   std::ofstream ofile;

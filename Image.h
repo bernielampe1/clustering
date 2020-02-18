@@ -4,10 +4,10 @@
 #include <fstream>
 #include <string>
 
-#include "drawLine.h"
-#include "types.h"
 #include "Exception.h"
 #include "Vec.h"
+#include "drawLine.h"
+#include "types.h"
 
 /* Abstraction of a 2-D image with template pixel type. */
 template <typename T> class Image {
@@ -37,7 +37,8 @@ public:
   void init(const u32 h, const u32 w) {
     T *temp = new T[h * w];
 
-    if (_data) clear();
+    if (_data)
+      clear();
 
     _height = h;
     _width = w;
@@ -67,7 +68,8 @@ public:
 
   Image<T> &operator=(Image<T> &&o) {
     if (this != &o) {
-      if (_data) clear();
+      if (_data)
+        clear();
 
       _data = o._data;
       _height = o._height;
@@ -80,9 +82,9 @@ public:
     return *this;
   }
 
-  T& operator[](const u32 i) const { return (_data[i]); }
+  T &operator[](const u32 i) const { return (_data[i]); }
 
-  T& get(const u32 i) const { return (_data[i]); }
+  T &get(const u32 i) const { return (_data[i]); }
 
   void set(const u32 i, const T &v) { _data[i] = v; }
 

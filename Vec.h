@@ -36,13 +36,14 @@ private:
   T *_data;
 
 public:
-  Vec() : _n(0), _data(0) { }
+  Vec() : _n(0), _data(0) {}
 
   Vec(u32 n) : _n(n), _data(0) { init(n); }
 
   Vec(const Vec<T> &v) : _n(v._n), _data(0) {
     init(_n);
-    for (u32 i = 0; i < v._n; i++) _data[i] = v._data[i];
+    for (u32 i = 0; i < v._n; i++)
+      _data[i] = v._data[i];
   }
 
   Vec<T>(Vec<T> &&o) : _n(o._n), _data(o._data) {
@@ -53,21 +54,23 @@ public:
   Vec<T> &operator=(const Vec<T> &o) {
     if (this != &o) {
       init(o._n);
-      for (u32 i = 0; i < o.n; i++) _data[i] = o._data[i];
+      for (u32 i = 0; i < o.n; i++)
+        _data[i] = o._data[i];
     }
 
     return (*this);
   }
 
-  Vec<T>& operator=(Vec<T> &&o) {
+  Vec<T> &operator=(Vec<T> &&o) {
     if (this != &o) {
-        if (_data) clear();
+      if (_data)
+        clear();
 
-        _data = o._data;
-        _n = o._n;
+      _data = o._data;
+      _n = o._n;
 
-        o._data = 0;
-        o._n = 0;
+      o._data = 0;
+      o._n = 0;
     }
 
     return this;
@@ -83,11 +86,13 @@ public:
 
     _n = n;
     _data = temp;
-    for (u32 i = 0; i < n; i++) _data[i] = v;
+    for (u32 i = 0; i < n; i++)
+      _data[i] = v;
   }
 
   void clear() {
-    if (_data) delete[] _data;
+    if (_data)
+      delete[] _data;
     _n = 0;
     _data = 0;
   }
@@ -98,29 +103,29 @@ public:
 
   /* Vec scalar operations */
   Vec<T> operator+(const T &c);
-  Vec<T>& operator+=(const T &c);
+  Vec<T> &operator+=(const T &c);
 
   Vec<T> operator-(const T &c);
-  Vec<T>& operator-=(const T &c);
+  Vec<T> &operator-=(const T &c);
 
   Vec<T> operator*(const T &c);
-  Vec<T>& operator*=(const T &c);
+  Vec<T> &operator*=(const T &c);
 
   Vec<T> operator/(const T &c);
-  Vec<T>& operator/=(const T &c);
+  Vec<T> &operator/=(const T &c);
 
   /* Simple composition operators */
   Vec<T> operator+(const Vec<T> &m);
-  Vec<T>& operator+=(const Vec<T> &m);
+  Vec<T> &operator+=(const Vec<T> &m);
 
   Vec<T> operator-(const Vec<T> &m);
-  Vec<T>& operator-=(const Vec<T> &m);
+  Vec<T> &operator-=(const Vec<T> &m);
 
   Vec<T> operator*(const Vec<T> &m);
-  Vec<T>& operator*=(const Vec<T> &m);
+  Vec<T> &operator*=(const Vec<T> &m);
 
   Vec<T> operator/(const Vec<T> &m);
-  Vec<T>& operator/=(const Vec<T> &m);
+  Vec<T> &operator/=(const Vec<T> &m);
 };
 
 #include "Vec.inl"
