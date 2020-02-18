@@ -32,17 +32,19 @@ bool cluster(const std::string &algo, const Matrix<S> &pts, u8 &labels,
 #include "dbscan.h"
 #include "em.h"
 #include "fuzzy.h"
-#include "kmeans.h"
 #include "meanshift.h"
 #include "ncuts.h"
 #include "spectral.h" */
+#include "kmeans.h"
 
 
 // one point per row of Matrix pts, supports up to 255 clusters
 template <typename S = float, typename T = float>
 bool cluster(const std::string &algo, const Matrix<S> &pts, u8 &labels,
              u8 &nclusters, Matrix<T> &clusters) {
-  // put if else string compares here and call cluster algo
+  if (algo == "kmeans") {
+    return keamns(pts, labels, nclusters, clusters);
+  }
 
   return false;
 }
