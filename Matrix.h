@@ -94,17 +94,9 @@ public:
   Matrix<T>& operator/=(const Matrix<T> &m);
 
   /* More complicated composition operations */
-  Matrix<T> dot(const Vec<T> &v);
+  Vec<T> dot(const Vec<T> &v);
 
   Matrix<T> dot(const Matrix<T> &m);
-
-  Matrix<T> normcol(const Matrix<T> &m);
-
-  Matrix<T> inverse();
-
-  Matrix<T> transpose();
-
-  double determinant();
 
   Vec<T> diag();
 };

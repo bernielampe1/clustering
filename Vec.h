@@ -6,6 +6,7 @@ struct Vec2f_t {
   float v[2];
   Vec2f_t() { v[0] = v[1] = 0.0; }
   float &operator[](const u32 i) { return (v[i]); }
+  u32 len() { return 2; }
 };
 
 /* Abstraction of a 3-D float vector */
@@ -13,6 +14,7 @@ struct Vec3f_t {
   float v[3];
   Vec3f_t() { v[0] = v[1] = v[2] = 0.0; }
   float &operator[](const u32 i) { return (v[i]); }
+  u32 len() { return 3; }
 };
 
 /* Abstraction of a 4-D float vector */
@@ -20,6 +22,7 @@ struct Vec4f_t {
   float v[4];
   Vec4f_t() { v[0] = v[1] = v[2] = v[3] = 0.0; }
   float &operator[](const u32 i) { return (v[i]); }
+  u32 len() { return 4; }
 };
 
 // for pixels
@@ -72,6 +75,8 @@ public:
   }
 
   T &operator[](const u32 i) { return (_data[i]); }
+
+  u32 len() { return _n; }
 };
 
 #endif // __VEC_H__

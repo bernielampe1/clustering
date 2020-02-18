@@ -103,29 +103,45 @@ Matrix<T>& Matrix<T>::operator/=(const Matrix<T> &m) {
 }
 
 template <typename T>
-Matrix<T> Matrix<T>::dot(const Vec<T> &v) {
+Vec<T> Matrix<T>::dot(const Vec<T> &v) {
+    if (v.len() != _cols)
+        throw Exception("matrix-vector are not compatible");
+
+    T s;
+    Vec<T> temp(_rows);
+    for(u32 r = 0; r < _rows; r++, s = 0) {
+        for(u32 c = 0; c < _cols; c++) s += v[c] * _data[r * _cols + c];
+        temp[r] = s;
+    }
+
+    return temp;
 }
 
 template <typename T>
 Matrix<T> Matrix<T>::dot(const Matrix<T> &m) {
-}
+    if (_cols != m._rows)
+        throw Exception("matrices are not compatible");
 
-template <typename T>
-Matrix<T> Matrix<T>::normcol(const Matrix<T> &m) {
-}
+    T s;
+    Matrix<T> temp(_rows, m._cols);
+    for(u32 r = 0; r < _rows; r++) {
+        for(u32 c = 0; c < m._cols; c++, s = 0) {
+            for(u32 i = 0; i < _cols; i++) {
+                s += _data[r * _cols + i] + m._data[i * m.cols + c];
+            }
+            temp._data[r * m._cols + c] = s;
+        }
+    }
 
-template <typename T>
-Matrix<T> Matrix<T>::inverse() {
-}
-
-template <typename T>
-Matrix<T> Matrix<T>::transpose() {
-}
-
-template <typename T>
-double Matrix<T>::determinant() {
+    return temp;
 }
 
 template <typename T>
 Vec<T> Matrix<T>::diag() {
+    if (_rows != _cols)
+        throw Exception("matrix is not square");
+
+    Vec<T> v(_rows * _cols);
+    for(u32 i = 0; i < _rows * _cols; i++) v[i] = _data[i * _cols + i];
+    return v;
 }
