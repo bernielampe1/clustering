@@ -158,6 +158,11 @@ Vec<T> Matrix<T>::diag() {
 }
 
 template <typename T>
+Matrix<T> Matrix<T>::cofactor(const u32 &r, const u32 &c) {
+
+}
+
+template <typename T>
 Matrix<T> Matrix<T>::determinant() {
   if (_rows != _cols)
     throw Exception("cannot compute determinant of non-square matrix");
@@ -166,7 +171,7 @@ Matrix<T> Matrix<T>::determinant() {
 
 template <typename T>
 Matrix<T> Matrix<T>::adjoint() {
-    
+
 }
 
 template <typename T>
@@ -174,6 +179,8 @@ Matrix<T> Matrix<T>::inverse() {
   if (_rows != _cols)
     throw Exception("cannot compute inverse of non-square matrix");
 
+  Matrix<T> adj = adjoint();
+  return adj /= determinant();
 }
 
 template<typename T>

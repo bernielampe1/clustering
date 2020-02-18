@@ -122,6 +122,8 @@ public:
 
   Matrix<T> dot(const Matrix<T> &m);
 
+  Matrix<T> cofactor(const u32 &r, const u32 &c);
+
   Matrix<T> determinant();
 
   Matrix<T> adjoint();

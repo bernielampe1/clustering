@@ -2,11 +2,13 @@ implement inverse for Matrix
 
 unit tests for Vec, Matrix and Image
 
-implement kmeans as intro
+implement kmeans as first algo adn write test
 
 fill out main.cc, args, reading images, clustering, rendering output
 
 implement dbscan, fuzzy cmeans, em, mean shift, spectral clustering, normalized cuts...
+
+write tests for all algos
 
 add clustering implementations with kernels
 

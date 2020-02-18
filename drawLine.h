@@ -3,8 +3,7 @@
 
 /* An implementation of Bressanham's mid-point, line drawing algorithm. */
 void drawLine(const int p0_x, const int p0_y, const int p1_x, const int p1_y,
-              const unsigned char v, const int height, const int width,
-              unsigned char *img) {
+              const unsigned char v, const int width, unsigned char *img) {
   int x0, y0, x1, y1;
 
   /* compute delta x and y */

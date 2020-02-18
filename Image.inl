@@ -212,13 +212,13 @@ template <> void Image<Vec2f_t>::writeToFile(const std::string &fname) const {
   memset(img, 0, _height * _width * sizeof(u8));
 
   // construct the graphical vector field
-  for (s32 h = 0; h < _height; h += spac) {
-    for (s32 w = 0; w < _width; w += spac) {
+  for (s32 h = 0; h < (s32)_height; h += spac) {
+    for (s32 w = 0; w < (s32)_width; w += spac) {
       s8 ex = w + _data[h * _width + w][0];
       s8 ey = h + _data[h * _width + w][1];
 
-      if (ex >= 0 && ex < _width && ey >= 0 && ey < _height) {
-        drawLine(w, h, ex, ey, (u8)255, _height, _width, img);
+      if (ex >= 0 && ex < (s32)_width && ey >= 0 && ey < (s32)_height) {
+        drawLine(w, h, ex, ey, (u8)255, _width, img);
       }
     }
   }
