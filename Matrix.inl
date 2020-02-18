@@ -158,6 +158,41 @@ Vec<T> Matrix<T>::diag() {
 }
 
 template <typename T>
-Matrix<T> Matrix<T>::inverse() {
+Matrix<T> Matrix<T>::determinant() {
+  if (_rows != _cols)
+    throw Exception("cannot compute determinant of non-square matrix");
+
+}
+
+template <typename T>
+Matrix<T> Matrix<T>::adjoint() {
     
+}
+
+template <typename T>
+Matrix<T> Matrix<T>::inverse() {
+  if (_rows != _cols)
+    throw Exception("cannot compute inverse of non-square matrix");
+
+}
+
+template<typename T>
+Vec<T> Matrix<T>::solve(const Vec<T> &b) {
+  // solve Ax = b
+  if (_rows != b.len())
+    throw Exception("the matrix-vector system is not compatible");
+
+  // init sol.
+  Vec<T> x(_cols);
+
+  // use cramers rule x_i = det(A_i) / det(A)
+  Matrix<T> temp = *this;
+  for(u32 i = 0; i < _cols; i++) {
+    for(u32 r = 0; r < _rows; r++) temp._data[r * _cols + i] = b[r]; // new column
+    x[i] = temp.determinant(); // compute det ration
+    for(u32 r = 0; r < _rows; r++) temp._data[r * _cols + i] = _data[r * _cols + i];
+  }
+  b /= determinant();
+
+  return x;
 }

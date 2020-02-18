@@ -95,6 +95,34 @@ public:
   T &operator[](const u32 i) { return (_data[i]); }
 
   u32 len() { return _n; }
+
+  /* Vec scalar operations */
+  Vec<T> operator+(const T &c);
+  Vec<T>& operator+=(const T &c);
+
+  Vec<T> operator-(const T &c);
+  Vec<T>& operator-=(const T &c);
+
+  Vec<T> operator*(const T &c);
+  Vec<T>& operator*=(const T &c);
+
+  Vec<T> operator/(const T &c);
+  Vec<T>& operator/=(const T &c);
+
+  /* Simple composition operators */
+  Vec<T> operator+(const Vec<T> &m);
+  Vec<T>& operator+=(const Vec<T> &m);
+
+  Vec<T> operator-(const Vec<T> &m);
+  Vec<T>& operator-=(const Vec<T> &m);
+
+  Vec<T> operator*(const Vec<T> &m);
+  Vec<T>& operator*=(const Vec<T> &m);
+
+  Vec<T> operator/(const Vec<T> &m);
+  Vec<T>& operator/=(const Vec<T> &m);
 };
+
+#include "Vec.inl"
 
 #endif // __VEC_H__

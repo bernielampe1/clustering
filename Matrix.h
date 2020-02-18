@@ -113,16 +113,22 @@ public:
   Matrix<T> operator/(const Matrix<T> &m);
   Matrix<T>& operator/=(const Matrix<T> &m);
 
-  /* More complicated composition operations */
+  /* More advanced composition operations */
+  Matrix<T> transpose();
+
+  Vec<T> diag();
+
   Vec<T> dot(const Vec<T> &v);
 
   Matrix<T> dot(const Matrix<T> &m);
 
-  Matrix<T> transpose();
+  Matrix<T> determinant();
+
+  Matrix<T> adjoint();
 
   Matrix<T> inverse();
 
-  Vec<T> diag();
+  Vec<T> solve(const Vec<T> &b);
 };
 
 #include "Matrix.inl"
