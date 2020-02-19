@@ -1,6 +1,8 @@
 #ifndef __VEC_H__
 #define __VEC_H__
 
+#include <cstdlib>
+#include <ostream>
 #include "types.h"
 
 /* Abstraction of a 2-D vector float */
@@ -41,6 +43,11 @@ public:
   Vec() : _n(0), _data(0) {}
 
   Vec(u32 n) : _n(n), _data(0) { init(n); }
+
+  Vec(const T v[], const u32 n) : _n(n), _data(0) {
+    init(n);
+    for(u32 i = 0; i < n; i++) _data[i] = v[i];
+  }
 
   Vec(const Vec<T> &v) : _n(v._n), _data(0) {
     init(_n);
@@ -99,6 +106,7 @@ public:
     _data = 0;
   }
 
+  T operator[](const u32 i) const { return (_data[i]); }
   T &operator[](const u32 i) { return (_data[i]); }
 
   u32 len() const { return _n; }
@@ -133,6 +141,12 @@ public:
   Vec<T> operator/(const Vec<T> &m) const;
   Vec<T> &operator/=(const Vec<T> &m);
 };
+
+template<typename T>
+std::ostream &operator<<(std::ostream &os, const Vec<T> &v) {
+    for(u32 i = 0; i < v.len(); i++) os << v[i] << ",";
+    return os;
+}
 
 #include "Vec.inl"
 
