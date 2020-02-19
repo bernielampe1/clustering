@@ -30,7 +30,7 @@ public:
 
   Image(const Image<T> &o) : _data(0), _height(o._height), _width(o._width) {
     init(_height, _width);
-    memcpy(_data, o._data, _height * _width * sizeof(T));
+    for(u32 i = 0; i < _height * _width; i++) _data[i] = o._data[i];
   }
 
   Image(Image<T> &&o) : _data(o._data), _height(o._height), _width(o._width) {
@@ -66,7 +66,7 @@ public:
   Image<T> &operator=(const Image<T> &o) {
     if (this != &o) {
       init(o._height, o._width);
-      memcpy(_data, o._data, _height * _width * sizeof(T));
+      for(u32 i = 0; i < _height * _width; i++) _data[i] = o._data[i];
     }
 
     return *this;

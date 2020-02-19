@@ -44,9 +44,7 @@ int main(int argc, char **argv) {
 
   // cluster vectors creating Matrix and labels using algorithms name from args
   if (algo == "kmeans") {
-    if (cluster("kmeans", pts, labels, nclusters, clusters)) {
-      throw Exception("kmeans cluster failed");
-    }
+    cluster("kmeans", pts, labels, nclusters, clusters);
   } else {
     throw Exception("unknown clustering algo");
   }

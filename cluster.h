@@ -25,7 +25,7 @@
    as input vectors
 */
 template <typename S, typename T>
-bool cluster(const std::string &algo, const Matrix<S> &pts, Vec<u8> &labels,
+void cluster(const std::string &algo, const Matrix<S> &pts, Vec<u8> &labels,
              u8 &nclusters, Matrix<T> &clusters);
 
 /* algorithms implemented one per file
@@ -39,13 +39,11 @@ bool cluster(const std::string &algo, const Matrix<S> &pts, Vec<u8> &labels,
 
 // one point per row of Matrix pts, supports up to 255 clusters
 template <typename S = float, typename T = float>
-bool cluster(const std::string &algo, const Matrix<S> &pts, Vec<u8> &labels,
+void cluster(const std::string &algo, const Matrix<S> &pts, Vec<u8> &labels,
              u8 &nclusters, Matrix<T> &clusters) {
   if (algo == "kmeans") {
-    return keamns(pts, labels, nclusters, clusters);
+    keamns(pts, labels, nclusters, clusters);
   }
-
-  return false;
 }
 
 #endif // __CLUSTER_H__
