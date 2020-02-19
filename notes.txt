@@ -1,1 +1,1 @@
-implement dbscan, fuzzy cmeans, em, mean shift, spectral clustering, normalized cuts, kernel algorithms and add tests for all
+implement dbscan, fuzzy cmeans, em, mean shift, spectral clustering, normalized cuts, kernel algorithms write report for each algorithm as they are implemented
