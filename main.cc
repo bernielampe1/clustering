@@ -38,7 +38,8 @@ int main(int argc, char **argv) {
     rows = imGray.height();
     cols = imGray.width();
     pts = imGray.createpts();
-  } else {
+  }
+  else{
     throw Exception("unknown file type, only accepts pgm and ppm");
   }
 

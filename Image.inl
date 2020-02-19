@@ -66,15 +66,15 @@ void Image<T>::convolve(const float *k, const u32 kheight, const u32 kwidth) {
 
 template <> Matrix<float> Image<u8>::createpts() {
   // one point per row and cols are num dimensions +2 for spatial position
-  Matrix<float> pts(_height * _width, 3);
+  Matrix<float> pts(_height * _width, 1);
 
   // create pts
   for(u32 r = 0, j = 0; r < _height; r++) {
     for(u32 c = 0; c < _width; c++) {
       u32 i = r * _width + c;
       pts[j++] = _data[i];
-      pts[j++] = r;
-      pts[j++] = c;
+      //pts[j++] = r;
+      //pts[j++] = c;
     }
   }
 
@@ -83,7 +83,7 @@ template <> Matrix<float> Image<u8>::createpts() {
 
 template <> Matrix<float> Image<RGB_t>::createpts() {
   // one point per row and cols are num dimensions +2 for spatial position
-  Matrix<float> pts(_height * _width, 5);
+  Matrix<float> pts(_height * _width, 3);
 
   // create pts
   for(u32 r = 0, j = 0; r < _height; r++) {
@@ -92,8 +92,8 @@ template <> Matrix<float> Image<RGB_t>::createpts() {
       pts[j++] = _data[i][0];
       pts[j++] = _data[i][1];
       pts[j++] = _data[i][2];
-      pts[j++] = r;
-      pts[j++] = c;
+      //pts[j++] = r;
+      //pts[j++] = c;
     }
   }
 

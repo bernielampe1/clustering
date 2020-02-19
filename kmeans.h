@@ -35,12 +35,14 @@ void keamns(const Matrix<S> &pts, Vec<u8> &labels, u8 &nclusters, Matrix<T> &clu
         count = 0;
 
         for(u32 j = 0; j < npts; j++) {
-            if (labels[j] == i)
+            if (labels[j] == i) {
                 mean += pts.getrow(j); // add point to mean
+                count++;
+            }
         }
-        mean /= count;
 
         // put mean in cluster matrix
+        mean /= (double)count;
         clusters.setrow(i, mean);
     }
 
@@ -61,7 +63,6 @@ void keamns(const Matrix<S> &pts, Vec<u8> &labels, u8 &nclusters, Matrix<T> &clu
             labels[i] = minl;
         }
     }
-
   } while (change);
 }
 

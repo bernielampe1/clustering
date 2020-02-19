@@ -1,5 +1,3 @@
-fill out main.cc, args, reading images, clustering, rendering output
-
 implement kmeans, dbscan, fuzzy cmeans, em, mean shift, spectral clustering, normalized cuts...
 
 add clustering implementations with kernels
