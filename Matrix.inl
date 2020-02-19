@@ -126,7 +126,7 @@ template <typename T> Matrix<T> Matrix<T>::dot(const Matrix<T> &m) const {
   for (u32 r = 0; r < _rows; r++) {
     for (u32 c = 0; c < m._cols; c++, s = 0) {
       for (u32 i = 0; i < _cols; i++) {
-        s += _data[r * _cols + i] + m._data[i * m._cols + c];
+        s += _data[r * _cols + i] * m._data[i * m._cols + c];
       }
       temp._data[r * m._cols + c] = (T)s;
     }
@@ -149,7 +149,7 @@ template <typename T> Vec<T> Matrix<T>::diag() const {
   if (_rows != _cols)
     throw Exception("matrix is not square");
 
-  Vec<T> v(_rows * _cols);
+  Vec<T> v(_rows);
   for (u32 i = 0; i < _cols; i++)
     v[i] = _data[i * _cols + i];
   return v;

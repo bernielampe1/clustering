@@ -41,12 +41,16 @@ int main()
     // more advanced operations
     cout << m2.transpose() << endl;
     cout << m2.diag() << endl;
-    cout << m2.dot(v0) << endl;
-    cout << m2.dot(m1) << endl;
+
+    cout << m0.dot(v0) << endl;
+    cout << m0.dot(m1) << endl;
+
     cout << m2.determinant_1() << endl;
     cout << m2.determinant_2() << endl;
+
     cout << m2.inverse_1() << endl;
     cout << m2.inverse_2() << endl;
+
     cout << m2.solve_1(v0) << endl;
     cout << m2.solve_2(v0) << endl;
 
