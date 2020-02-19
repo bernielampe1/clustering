@@ -19,6 +19,11 @@ private:
 public:
   Image() : _data(0), _height(0), _width(0) {}
 
+  Image(Vec<T> &v, const u32 h, const u32 w) : _data(0), _height(h), _width(w) {
+    init(_height, _width);
+    for(u32 i = 0; i < h * w; i++) _data[i] = v[i];
+  }
+
   Image(const u32 h, const u32 w) : _data(0), _height(h), _width(w) {
     init(_height, _width);
   }
@@ -98,6 +103,8 @@ public:
   Image<T> operator-(const Image<T> &im) const;
 
   Image<T> operator*(const Image<T> &im) const;
+
+  Matrix<float> createpts();
 
   void readFromFile(const std::string &fname);
 
