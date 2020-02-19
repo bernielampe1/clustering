@@ -1,6 +1,6 @@
 template <typename T> void Image<T>::convolve(const float *k, const u32 ksize) {
   Image<float> temp(_width, _height);
-  u32 center = ksize >> 1;
+  s32 center = ksize >> 1;
 
   // convolve with 1-D kernel in the x direction
   for (s32 h = 0; h < _height; h++) {
@@ -17,12 +17,12 @@ template <typename T> void Image<T>::convolve(const float *k, const u32 ksize) {
   }
 
   // convolve with 1-D kernel in the y direction
-  for (s32 h = 0; h < temp._height; h++) {
-    for (s32 w = 0; w < temp._width; w++) {
+  for (s32 h = 0; h < (s32)temp._height; h++) {
+    for (s32 w = 0; w < (s32)temp._width; w++) {
       float d = 0.0;
       for (s32 c = -center; c <= center; c++) {
         s32 wp = w + c;
-        if (wp >= 0 && wp < temp._width)
+        if (wp >= 0 && wp < (s32)temp._width)
           d += temp._data[h * temp._width + wp] * k[center + c];
       }
 
@@ -45,8 +45,8 @@ void Image<T>::convolve(const float *k, const u32 kheight, const u32 kwidth) {
       float d = 0.0; // kernel accumulator
 
       // loop over kernel
-      for (s32 i = 0; i < kheight; i++) {
-        for (s32 j = 0; j < kwidth; j++) {
+      for (s32 i = 0; i < (s32)kheight; i++) {
+        for (s32 j = 0; j < (s32)kwidth; j++) {
           s32 hp = h + i - (kheightp >> 1);
           s32 wp = w + j - (kwidthp >> 1);
 
@@ -194,7 +194,9 @@ template <> void Image<RGB_t>::writeToFile(const std::string &fname) const {
     throw(Exception("unable to open file for writing"));
   }
 
-  ofile << "P6" << endl << _width << " " << _height << endl << "255" << endl;
+  ofile << "P6" << std::endl
+        << _width << " " << _height << std::endl
+        << "255" << std::endl;
   for (u32 i = 0; i < numElems; i++) {
     ofile.write((s8 *)&(_data[i][0]), sizeof(u8));
     ofile.write((s8 *)&(_data[i][1]), sizeof(u8));
@@ -231,7 +233,9 @@ template <> void Image<Vec2f_t>::writeToFile(const std::string &fname) const {
   }
 
   // write to file
-  ofile << "P5" << endl << _width << " " << _height << endl << "255" << endl;
+  ofile << "P5" << std::endl
+        << _width << " " << _height << std::endl
+        << "255" << std::endl;
   ofile.write((s8 *)img, _width * _height * sizeof(u8));
   ofile.close();
 

@@ -5,6 +5,7 @@
 #include <string>
 
 #include "Exception.h"
+#include "Matrix.h"
 #include "Vec.h"
 #include "drawLine.h"
 #include "types.h"

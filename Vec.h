@@ -1,9 +1,9 @@
 #ifndef __VEC_H__
 #define __VEC_H__
 
+#include "types.h"
 #include <cstdlib>
 #include <ostream>
-#include "types.h"
 
 /* Abstraction of a 2-D vector float */
 struct Vec2f_t {
@@ -46,7 +46,8 @@ public:
 
   Vec(const T v[], const u32 n) : _n(n), _data(0) {
     init(n);
-    for(u32 i = 0; i < n; i++) _data[i] = v[i];
+    for (u32 i = 0; i < n; i++)
+      _data[i] = v[i];
   }
 
   Vec(const Vec<T> &v) : _n(v._n), _data(0) {
@@ -142,10 +143,11 @@ public:
   Vec<T> &operator/=(const Vec<T> &m);
 };
 
-template<typename T>
+template <typename T>
 std::ostream &operator<<(std::ostream &os, const Vec<T> &v) {
-    for(u32 i = 0; i < v.len(); i++) os << v[i] << ",";
-    return os;
+  for (u32 i = 0; i < v.len(); i++)
+    os << v[i] << ",";
+  return os;
 }
 
 #include "Vec.inl"

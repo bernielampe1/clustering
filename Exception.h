@@ -4,12 +4,10 @@
 #include <exception>
 #include <iostream>
 
-using namespace std;
-
 /* C++ error handeling class for passing simple strings. */
-class Exception : public exception {
+class Exception : public std::exception {
 private:
-  string mes;
+  std::string mes;
 
 public:
   Exception(const char *s) : mes(s) {}

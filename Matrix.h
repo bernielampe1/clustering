@@ -1,7 +1,7 @@
 #ifndef __MATRIX_H__
 #define __MATRIX_H__
 
-#include <math.h>
+#include<iostream>
 
 #include "Exception.h"
 #include "Vec.h"
@@ -22,7 +22,8 @@ public:
 
   Matrix(const T m[], const u32 r, const u32 c) : _data(0), _rows(r), _cols(c) {
     init(_rows, _cols);
-    for(u32 i = 0; i < _rows * _cols; i++) _data[i] = m[i];
+    for (u32 i = 0; i < _rows * _cols; i++)
+      _data[i] = m[i];
   }
 
   Matrix(const Matrix<T> &m) : _data(0), _rows(m._rows), _cols(m._cols) {
@@ -163,16 +164,16 @@ public:
   Matrix<T> inverse_2() const;
 };
 
-template<typename T>
+template <typename T>
 std::ostream &operator<<(std::ostream &os, const Matrix<T> &m) {
-    for(u32 r = 0; r < m.rows(); r++) {
-        for(u32 c = 0; c < m.cols(); c++) {
-            os << m.get(r, c) << ", ";
-        }
-        cout << std::endl;
+  for (u32 r = 0; r < m.rows(); r++) {
+    for (u32 c = 0; c < m.cols(); c++) {
+      os << m.get(r, c) << ", ";
     }
+    std::cout << std::endl;
+  }
 
-    return os;
+  return os;
 }
 
 #include "Matrix.inl"
