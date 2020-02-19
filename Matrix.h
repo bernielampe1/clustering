@@ -3,6 +3,7 @@
 
 #include <math.h>
 
+#include "Exception.h"
 #include "Vec.h"
 #include "types.h"
 
@@ -12,13 +13,16 @@ private:
   T *_data;         // columns in row major order
   u32 _rows, _cols; // matrix dimensions
 
-  constexpr static double tol = 1e-12;
-
 public:
   Matrix() : _data(0), _rows(0), _cols(0) {}
 
   Matrix(const u32 r, const u32 c) : _data(0), _rows(r), _cols(c) {
     init(r, c);
+  }
+
+  Matrix(const T m[], const u32 r, const u32 c) : _data(0), _rows(r), _cols(c) {
+    init(_rows, _cols);
+    for(u32 i = 0; i < _rows * _cols; i++) _data[i] = m[i];
   }
 
   Matrix(const Matrix<T> &m) : _data(0), _rows(m._rows), _cols(m._cols) {
@@ -132,7 +136,7 @@ public:
   Matrix<T> dot(const Matrix<T> &m) const;
 
   // perform LUP decomp
-  Matrix<T> decompLUP(Vec<s32> &P) const;
+  Matrix<T> decompLUP(Vec<u32> &P) const;
 
   // return cofactor matrix
   Matrix<T> cofactor(const u32 &rp, const u32 &cp) const;
@@ -158,6 +162,18 @@ public:
   // solve using LUP decomp
   Vec<T> solve_2(const Vec<T> &b) const;
 };
+
+template<typename T>
+std::ostream &operator<<(std::ostream &os, const Matrix<T> &m) {
+    for(u32 r = 0; r < m.rows(); r++) {
+        for(u32 c = 0; c < m.cols(); c++) {
+            os << m.get(r, c) << ", ";
+        }
+        cout << std::endl;
+    }
+
+    return os;
+}
 
 #include "Matrix.inl"
 

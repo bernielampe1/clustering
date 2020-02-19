@@ -13,4 +13,6 @@ typedef unsigned short u16;
 typedef unsigned int u32;
 typedef unsigned long long u64;
 
+constexpr static double tol = 1e-12;
+
 #endif // __TYPES_H__

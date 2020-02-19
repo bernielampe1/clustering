@@ -126,7 +126,7 @@ template <typename T> Matrix<T> Matrix<T>::dot(const Matrix<T> &m) const {
   for (u32 r = 0; r < _rows; r++) {
     for (u32 c = 0; c < m._cols; c++, s = 0) {
       for (u32 i = 0; i < _cols; i++) {
-        s += _data[r * _cols + i] + m._data[i * m.cols + c];
+        s += _data[r * _cols + i] + m._data[i * m._cols + c];
       }
       temp._data[r * m._cols + c] = (T)s;
     }
@@ -174,6 +174,8 @@ Matrix<T> Matrix<T>::cofactor(const u32 &rp, const u32 &cp) const {
       }
     }
   }
+
+  return cof;
 }
 
 /* Returns both L-E and U matrix as A = (L-E)+U such as P*A = L*U
@@ -181,7 +183,7 @@ Matrix<T> Matrix<T>::cofactor(const u32 &rp, const u32 &cp) const {
  * contains column indexes where permutation matrix has "1" s.t. P[N] = S+N and 
  * the det(P) = (-1)^S. */
 template<typename T>
-Matrix<T> Matrix<T>::decompLUP(Vec<s32> &P) const {
+Matrix<T> Matrix<T>::decompLUP(Vec<u32> &P) const {
     s32 i, j, k, imax;
     double maxA, absA;
 
@@ -300,7 +302,7 @@ template <typename T> Vec<T> Matrix<T>::solve_1(const Vec<T> &b) const {
     for (u32 r = 0; r < _rows; r++)
       temp._data[r * _cols + i] = _data[r * _cols + i];
   }
-  b /= determinant_1();
+  x /= determinant_1();
 
   return x;
 }
@@ -371,4 +373,6 @@ template <typename T> Vec<T> Matrix<T>::solve_2(const Vec<T> &b) const {
 
     x[i] /= lup._data[i * _cols + i];
   }
+
+  return x;
 }
