@@ -101,36 +101,36 @@ public:
 
   T &operator[](const u32 i) { return (_data[i]); }
 
-  u32 len() { return _n; }
+  u32 len() const { return _n; }
 
-  T sum();
-  T prod();
-  Vec<T> abs();
+  T sum() const;
+  T prod() const;
+  Vec<T> abs() const;
 
   /* Vec scalar operations */
-  Vec<T> operator+(const T &c);
+  Vec<T> operator+(const T &c) const;
   Vec<T> &operator+=(const T &c);
 
-  Vec<T> operator-(const T &c);
+  Vec<T> operator-(const T &c) const;
   Vec<T> &operator-=(const T &c);
 
-  Vec<T> operator*(const T &c);
+  Vec<T> operator*(const T &c) const;
   Vec<T> &operator*=(const T &c);
 
-  Vec<T> operator/(const T &c);
+  Vec<T> operator/(const T &c) const;
   Vec<T> &operator/=(const T &c);
 
   /* Simple composition operators */
-  Vec<T> operator+(const Vec<T> &m);
+  Vec<T> operator+(const Vec<T> &m) const;
   Vec<T> &operator+=(const Vec<T> &m);
 
-  Vec<T> operator-(const Vec<T> &m);
+  Vec<T> operator-(const Vec<T> &m) const;
   Vec<T> &operator-=(const Vec<T> &m);
 
-  Vec<T> operator*(const Vec<T> &m);
+  Vec<T> operator*(const Vec<T> &m) const;
   Vec<T> &operator*=(const Vec<T> &m);
 
-  Vec<T> operator/(const Vec<T> &m);
+  Vec<T> operator/(const Vec<T> &m) const;
   Vec<T> &operator/=(const Vec<T> &m);
 };
 

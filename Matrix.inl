@@ -1,4 +1,4 @@
-template <typename T> Matrix<T> Matrix<T>::operator+(const T &c) {
+template <typename T> Matrix<T> Matrix<T>::operator+(const T &c) const {
   Matrix<T> temp(_rows, _cols);
   for (u32 i = 0; i < _rows * _cols; i++)
     temp._data[i] = _data[i] + c;
@@ -11,7 +11,7 @@ template <typename T> Matrix<T> &Matrix<T>::operator+=(const T &c) {
   return *this;
 }
 
-template <typename T> Matrix<T> Matrix<T>::operator-(const T &c) {
+template <typename T> Matrix<T> Matrix<T>::operator-(const T &c) const {
   Matrix<T> temp(_rows, _cols);
   for (u32 i = 0; i < _rows * _cols; i++)
     temp._data[i] = _data[i] - c;
@@ -24,7 +24,7 @@ template <typename T> Matrix<T> &Matrix<T>::operator-=(const T &c) {
   return *this;
 }
 
-template <typename T> Matrix<T> Matrix<T>::operator*(const T &c) {
+template <typename T> Matrix<T> Matrix<T>::operator*(const T &c) const {
   Matrix<T> temp(_rows, _cols);
   for (u32 i = 0; i < _rows * _cols; i++)
     temp._data[i] = _data[i] * c;
@@ -37,7 +37,7 @@ template <typename T> Matrix<T> &Matrix<T>::operator*=(const T &c) {
   return *this;
 }
 
-template <typename T> Matrix<T> Matrix<T>::operator/(const T &c) {
+template <typename T> Matrix<T> Matrix<T>::operator/(const T &c) const {
   Matrix<T> temp(_rows, _cols);
   for (u32 i = 0; i < _rows * _cols; i++)
     temp._data[i] = _data[i] / c;
@@ -50,7 +50,7 @@ template <typename T> Matrix<T> &Matrix<T>::operator/=(const T &c) {
   return *this;
 }
 
-template <typename T> Matrix<T> Matrix<T>::operator+(const Matrix<T> &m) {
+template <typename T> Matrix<T> Matrix<T>::operator+(const Matrix<T> &m) const {
   Matrix<T> temp(m._rows, m._cols);
   for (u32 i = 0; i < m._rows * m._cols; i++)
     temp._data[i] = _data[i] + m._data[i];
@@ -63,7 +63,7 @@ template <typename T> Matrix<T> &Matrix<T>::operator+=(const Matrix<T> &m) {
   return *this;
 }
 
-template <typename T> Matrix<T> Matrix<T>::operator-(const Matrix<T> &m) {
+template <typename T> Matrix<T> Matrix<T>::operator-(const Matrix<T> &m) const {
   Matrix<T> temp(m._rows, m._cols);
   for (u32 i = 0; i < m._rows * m._cols; i++)
     temp._data[i] = _data[i] - m._data[i];
@@ -76,7 +76,7 @@ template <typename T> Matrix<T> &Matrix<T>::operator-=(const Matrix<T> &m) {
   return *this;
 }
 
-template <typename T> Matrix<T> Matrix<T>::operator*(const Matrix<T> &m) {
+template <typename T> Matrix<T> Matrix<T>::operator*(const Matrix<T> &m) const {
   Matrix<T> temp(m._rows, m._cols);
   for (u32 i = 0; i < m._rows * m._cols; i++)
     temp._data[i] = _data[i] * m._data[i];
@@ -89,7 +89,7 @@ template <typename T> Matrix<T> &Matrix<T>::operator*=(const Matrix<T> &m) {
   return *this;
 }
 
-template <typename T> Matrix<T> Matrix<T>::operator/(const Matrix<T> &m) {
+template <typename T> Matrix<T> Matrix<T>::operator/(const Matrix<T> &m) const {
   Matrix<T> temp(m._rows, m._cols);
   for (u32 i = 0; i < m._rows * m._cols; i++)
     temp._data[i] = _data[i] / m._data[i];
@@ -102,40 +102,40 @@ template <typename T> Matrix<T> &Matrix<T>::operator/=(const Matrix<T> &m) {
   return *this;
 }
 
-template <typename T> Vec<T> Matrix<T>::dot(const Vec<T> &v) {
+template <typename T> Vec<T> Matrix<T>::dot(const Vec<T> &v) const {
   if (v.len() != _cols)
     throw Exception("matrix-vector are not compatible");
 
-  T s;
+  double s;
   Vec<T> temp(_rows);
   for (u32 r = 0; r < _rows; r++, s = 0) {
     for (u32 c = 0; c < _cols; c++)
       s += v[c] * _data[r * _cols + c];
-    temp[r] = s;
+    temp[r] = (T)s;
   }
 
   return temp;
 }
 
-template <typename T> Matrix<T> Matrix<T>::dot(const Matrix<T> &m) {
+template <typename T> Matrix<T> Matrix<T>::dot(const Matrix<T> &m) const {
   if (_cols != m._rows)
     throw Exception("matrices are not compatible");
 
-  T s;
+  double s;
   Matrix<T> temp(_rows, m._cols);
   for (u32 r = 0; r < _rows; r++) {
     for (u32 c = 0; c < m._cols; c++, s = 0) {
       for (u32 i = 0; i < _cols; i++) {
         s += _data[r * _cols + i] + m._data[i * m.cols + c];
       }
-      temp._data[r * m._cols + c] = s;
+      temp._data[r * m._cols + c] = (T)s;
     }
   }
 
   return temp;
 }
 
-template <typename T> Matrix<T> Matrix<T>::transpose() {
+template <typename T> Matrix<T> Matrix<T>::transpose() const {
   Matrix<T> temp(_cols, _rows);
   for (u32 r = 0; r < _rows; r++) {
     for (u32 c = 0; c < _cols; c++) {
@@ -145,18 +145,18 @@ template <typename T> Matrix<T> Matrix<T>::transpose() {
   return temp;
 }
 
-template <typename T> Vec<T> Matrix<T>::diag() {
+template <typename T> Vec<T> Matrix<T>::diag() const {
   if (_rows != _cols)
     throw Exception("matrix is not square");
 
   Vec<T> v(_rows * _cols);
-  for (u32 i = 0; i < _rows * _cols; i++)
+  for (u32 i = 0; i < _cols; i++)
     v[i] = _data[i * _cols + i];
   return v;
 }
 
 template <typename T>
-Matrix<T> Matrix<T>::cofactor(const u32 &rp, const u32 &cp) {
+Matrix<T> Matrix<T>::cofactor(const u32 &rp, const u32 &cp) const {
   if (_rows <= 1 || _cols <= 1)
     throw Exception("cannot create cofactor matrix");
 
@@ -176,79 +176,111 @@ Matrix<T> Matrix<T>::cofactor(const u32 &rp, const u32 &cp) {
   }
 }
 
+/* Returns both L-E and U matrix as A = (L-E)+U such as P*A = L*U
+ * The permutation matrix is not stored as a matrix, but in vector P of size N+1
+ * contains column indexes where permutation matrix has "1" s.t. P[N] = S+N and 
+ * the det(P) = (-1)^S. */
 template<typename T>
-void Matrix<T>::decompLUP(Matrix<T> &L, Matrix<T> &U, u32 &P) {
+Matrix<T> Matrix<T>::decompLUP(Vec<s32> &P) const {
+    s32 i, j, k, imax;
+    double maxA, absA;
+
     if (_rows != _cols)
       throw Exception("cannot perform LU decomp on non-square matrix");
 
-	int i, j, k;
-	double sum = 0;
+    // create copy
+    Matrix<T> temp = *this;
 
-	for (i = 0; i < n; i++) {
-		U[i][i] = 1;
-	}
+    P.init(_rows+1);
+    for(i = 0; i <= _rows; i++) P[i] = i;
 
-	for (j = 0; j < n; j++) {
-		for (i = j; i < n; i++) {
-			sum = 0;
-			for (k = 0; k < j; k++) {
-				sum = sum + L[i][k] * U[k][j];	
-			}
-			L[i][j] = A[i][j] - sum;
-		}
+    for(i = 0; i < _rows; i++) {
+        maxA = 0;
+        imax = i;
 
-		for (i = j; i < n; i++) {
-			sum = 0;
-			for(k = 0; k < j; k++) {
-				sum = sum + L[j][k] * U[k][i];
-			}
-			if (L[j][j] == 0) {
-				printf("det(L) close to 0!\n Can't divide by 0...\n");
-				exit(EXIT_FAILURE);
-			}
-			U[j][i] = (A[j][i] - sum) / L[j][j];
-		}
-	}
+        for(k = i; k < _rows; i++) {
+            if ((absA = fabs(temp._data[k * _cols + i])) > maxA) {
+                maxA = absA;
+                imax = k;
+            }
+        }
+
+        if (maxA < tol)
+            throw Exception("matrix is degenerate");
+
+        if (imax != i) {
+            // pivoting P
+            j = P[i];
+            P[i] = P[imax];
+            P[imax] = j;
+
+            // pivot rows
+            for(int c = 0; c < _cols; c++) {
+                // swap
+                T t = temp._data[i * _cols + c];
+                temp._data[i * _cols + c] = temp._data[imax * _cols + c];;
+                temp._data[imax * _cols + c] = t;
+            }
+
+            // count pivot
+            P[_rows]++;
+        }
+
+        for(j = i + 1; j < _rows; j++) {
+            temp._data[j * _cols + i] /= temp._data[i * _cols + j];
+
+            for(k = i + 1; k < _rows; k++)
+                temp._data[j * _cols + k] -= temp._data[j * _cols + i] *
+                                                                temp._data[i * _cols + k];
+        }
+    }
+
+    return temp;
 }
 
-template <typename T> T Matrix<T>::determinant() {
-  if (_rows != _cols)
-    throw Exception("cannot compute determinant of non-square matrix");
-
-  u32 P;
-  Matrix<T> L, U;
-
-  decompLUP(L, U, P);
-  T det = L.diag().prod() * U.diag.prod();
-  return (P % 2 ? 1: -1) * det;
-}
-
-template <typename T> Matrix<T> Matrix<T>::adjoint() {
+template <typename T> Matrix<T> Matrix<T>::adjoint() const {
   s32 sign = 1;
   Matrix<T> adj(_rows, _cols);
   for (u32 r = 0; r < _rows; r++) {
     for (u32 c = 0; c < _cols; c++) {
       Matrix<T> cof = cofactor(r, c);
       sign = ((r + c) % 2) ? 1 : -1;
-      adj._data[c * _cols + r] = sign * determinant(dof);
+      adj._data[c * _cols + r] = sign * cof.determinant_1();
     }
   }
 
   return adj;
 }
 
-template <typename T> Matrix<T> Matrix<T>::inverseAdjoint() {
+template <typename T> double Matrix<T>::determinant_1() const {
+  if (_rows != _cols)
+    throw Exception("cannot compute determinant of non-square matrix");
+
+  double det = 0;
+  s32 sign = 1;
+  if (_rows == 1) return _data[0];
+
+  for(u32 f = 0; f < _cols; f++) {
+    Matrix<T> temp = cofactor(0, f);
+    det += sign * _data[0 * _cols + f] * temp.determinant_1();
+    sign = -sign;
+  }
+
+  return det;
+}
+
+template <typename T> Matrix<T> Matrix<T>::inverse_1() const {
   if (_rows != _cols)
     throw Exception("cannot compute inverse of non-square matrix");
 
-  T det = determinant();
+  T det = determinant_1();
   if (abs(det) < tol)
     throw Exception("determinant is zero for inverse operation");
 
   return adjoint() /= det;
 }
 
-template <typename T> Vec<T> Matrix<T>::solveKramers(const Vec<T> &b) {
+template <typename T> Vec<T> Matrix<T>::solve_1(const Vec<T> &b) const {
   // solve Ax = b with kramer's rule
   if (_rows != b.len())
     throw Exception("the matrix-vector system is not compatible");
@@ -264,24 +296,79 @@ template <typename T> Vec<T> Matrix<T>::solveKramers(const Vec<T> &b) {
   for (u32 i = 0; i < _cols; i++) {
     for (u32 r = 0; r < _rows; r++)
       temp._data[r * _cols + i] = b[r]; // new column
-    x[i] = temp.determinant();          // compute det ration
+    x[i] = temp.determinant_1();          // compute det ration
     for (u32 r = 0; r < _rows; r++)
       temp._data[r * _cols + i] = _data[r * _cols + i];
   }
-  b /= determinant();
+  b /= determinant_1();
 
   return x;
 }
 
-template <typename T> Matrix<T> Matrix<T>::inverseLUP() {
+template <typename T> double Matrix<T>::determinant_2() const {
   if (_rows != _cols)
-    throw Exception("cannot compute inverse of non-square matrix");
+    throw Exception("cannot compute determinant of non-square matrix");
+
+  Vec<u32> P;
+  Matrix<T> lup = decompLUP(P);
+
+  double det = lup._data[0];
+  for(u32 i = 1; i < _rows; i++) det *= _data[i * _cols + i];
+
+  if ((P[_rows] - _rows) % 2 != 0) det *= -1;
+
+  return det;
 }
 
-template <typename T> Vec<T> Matrix<T>::solveLUP(const Vec<T> &b) {
+template <typename T> Matrix<T> Matrix<T>::inverse_2() const {
+  if (_rows != _cols)
+    throw Exception("cannot compute inverse of non-square matrix");
+
+  Vec<u32> P;
+  Matrix<T> lup = decompLUP(P);
+  Matrix<T> inv(_rows, _cols);
+
+  for(u32 j = 0; j < _rows; j++) {
+    for(u32 i = 0; i < _cols; i++) { 
+      inv._data[i * _cols + j] = (P[i] == j) ? 1 : 0;
+
+      for(u32 k = 0; k < i; k++)
+        inv._data[i * _cols + j] -= _data[i * _cols + k] * inv._data[k * _cols + j];
+    }
+
+    for(u32 i = _rows - 1; i >= 0; i--) {
+      for(u32 k = i + 1; k < _rows; k++)
+          inv._data[i * _cols + j] -= _data[i * _cols + k] * inv._data[k * _cols + j];
+
+      inv._data[i * _cols + j] /= _data[i * _cols + i];
+    }
+  }
+
+  return inv;
+}
+
+template <typename T> Vec<T> Matrix<T>::solve_2(const Vec<T> &b) const {
   if (_rows != b.len())
     throw Exception("the matrix-vector system is not compatible");
 
   if (_rows != _cols)
     throw Exception("cannot compute inverse of non-square matrix");
+
+  Vec<u32> P;
+  Matrix<T> lup = decompLUP(P);
+
+  Vec<T> x(b.len());
+  for(u32 i = 0; i < _rows; i++) {
+    x[i] = b[P[i]];
+
+    for (u32 k = 0; k < i; k++)
+        x[i] -= lup._data[i * _cols + k] * x[k];
+  }
+
+  for(u32 i = _rows - 1; i >= 0; i--) {
+    for(u32 k = i + 1; k < _rows; k++)
+      x[i] -= lup._data[i * _cols + k] * x[k];
+
+    x[i] /= lup._data[i * _cols + i];
+  }
 }

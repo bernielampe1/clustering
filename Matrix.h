@@ -1,7 +1,7 @@
 #ifndef __MATRIX_H__
 #define __MATRIX_H__
 
-#include <math>
+#include <math.h>
 
 #include "Vec.h"
 #include "types.h"
@@ -11,6 +11,8 @@ template <typename T> class Matrix {
 private:
   T *_data;         // columns in row major order
   u32 _rows, _cols; // matrix dimensions
+
+  constexpr static double tol = 1e-12;
 
 public:
   Matrix() : _data(0), _rows(0), _cols(0) {}
@@ -95,63 +97,66 @@ public:
   }
 
   /* Matrix scalar operations */
-  Matrix<T> operator+(const T &c);
+  Matrix<T> operator+(const T &c) const;
   Matrix<T> &operator+=(const T &c);
 
-  Matrix<T> operator-(const T &c);
+  Matrix<T> operator-(const T &c) const;
   Matrix<T> &operator-=(const T &c);
 
-  Matrix<T> operator*(const T &c);
+  Matrix<T> operator*(const T &c) const;
   Matrix<T> &operator*=(const T &c);
 
-  Matrix<T> operator/(const T &c);
+  Matrix<T> operator/(const T &c) const;
   Matrix<T> &operator/=(const T &c);
 
   /* Simple composition operators */
-  Matrix<T> operator+(const Matrix<T> &m);
+  Matrix<T> operator+(const Matrix<T> &m) const;
   Matrix<T> &operator+=(const Matrix<T> &m);
 
-  Matrix<T> operator-(const Matrix<T> &m);
+  Matrix<T> operator-(const Matrix<T> &m) const;
   Matrix<T> &operator-=(const Matrix<T> &m);
 
-  Matrix<T> operator*(const Matrix<T> &m);
+  Matrix<T> operator*(const Matrix<T> &m) const;
   Matrix<T> &operator*=(const Matrix<T> &m);
 
-  Matrix<T> operator/(const Matrix<T> &m);
+  Matrix<T> operator/(const Matrix<T> &m) const;
   Matrix<T> &operator/=(const Matrix<T> &m);
 
   /* More advanced composition operations */
-  Matrix<T> transpose();
+  Matrix<T> transpose() const;
 
-  Vec<T> diag();
+  Vec<T> diag() const;
 
-  Vec<T> dot(const Vec<T> &v);
+  Vec<T> dot(const Vec<T> &v) const;
 
-  Matrix<T> dot(const Matrix<T> &m);
+  Matrix<T> dot(const Matrix<T> &m) const;
 
   // perform LUP decomp
-  void decompLUP(Matrix<T> &L, Matrix<T> &U, u32 &P);
+  Matrix<T> decompLUP(Vec<s32> &P) const;
 
   // return cofactor matrix
-  Matrix<T> cofactor(const u32 &rp, const u32 &cp);
+  Matrix<T> cofactor(const u32 &rp, const u32 &cp) const;
 
   // return adjoint matrix
-  Matrix<T> adjoint();
+  Matrix<T> adjoint() const;
 
-  // compute determinant using LUP decomp
-  T determinant();
+  // compute determinant using cofactors
+  double determinant_1() const;
 
   // invert using adjoint matrix
-  Matrix<T> inverse_1();
+  Matrix<T> inverse_1() const;
 
   // solve using kramer's method
-  Vec<T> solve_1(const Vec<T> &b);
+  Vec<T> solve_1(const Vec<T> &b) const;
+
+  // compute determinant using LUP decomp
+  double determinant_2() const;
 
   // invert using LUP decomp
-  Matrix<T> inverse_2();
+  Matrix<T> inverse_2() const;
 
   // solve using LUP decomp
-  Vec<T> solve_2(const Vec<T> &b);
+  Vec<T> solve_2(const Vec<T> &b) const;
 };
 
 #include "Matrix.inl"
