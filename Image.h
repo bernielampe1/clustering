@@ -94,6 +94,8 @@ public:
 
   void set(const u32 i, const T &v) { _data[i] = v; }
 
+  void set(const u32 r, const u32 c, const T &v) { _data[r * _width + c] = v; }
+
   void convolve(const float *k, const u32 ksize);
 
   void convolve(const float *k, const u32 kheight, const u32 kwidth);

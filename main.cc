@@ -1,6 +1,41 @@
-#include "cluster.h"
+#include<fstream>
 
 using namespace std;
+
+#include "cluster.h"
+
+void readPts(const string fname, u32 &rows, u32 &cols, Matrix<float> &pts) {
+  std::ifstream ifile;
+  u32 r, c, count = 0;
+
+  ifile.open(fname.c_str());
+  if (!ifile)
+    throw Exception("could not read from file");
+
+  // count file size
+  ifile >> rows >> cols;
+  while(!ifile.eof()) {
+    ifile >> r >> c;
+    count++;
+  }
+  ifile.close();
+
+  // init and read pts
+  pts.init(count, 2);
+  ifile.open(fname.c_str());
+
+  count = 0;
+  if (!ifile)
+    throw Exception("could not read from file");
+  ifile >> rows >> cols;
+  while(!ifile.eof()) {
+    ifile >> r >> c;
+    pts.set(count, 0, (float)r);
+    pts.set(count, 1, (float)c);
+    count++;
+  }
+  ifile.close();
+}
 
 int main(int argc, char **argv) {
 
@@ -38,6 +73,8 @@ int main(int argc, char **argv) {
     rows = imGray.height();
     cols = imGray.width();
     pts = imGray.createpts();
+  } else if (ext == "pts") {
+    readPts(fname, rows, cols, pts);
   }
   else{
     throw Exception("unknown file type, only accepts pgm and ppm");
@@ -50,11 +87,18 @@ int main(int argc, char **argv) {
     throw Exception("unknown clustering algo");
   }
 
-  // render vectors into new image
-  Image<u8> labelImage(labels, rows, cols);
-
-  // write output color image with clusters
-  labelImage.writeToFile(fname + "_out.pgm");
+  if (ext == "pts") {
+    Image<u8> labelImage(rows, cols);
+    for(u32 i = 0; i < labels.len(); i++) {
+      u32 r = pts.get(i, 0);
+      u32 c = pts.get(i, 1);
+      labelImage.set(r, c, labels[i]);
+    }
+    labelImage.writeToFile(fname + "_out.pgm");
+  } else {
+    Image<u8> labelImage(labels, rows, cols);
+    labelImage.writeToFile(fname + "_out.pgm");
+  }
 
   return 0;
 }
