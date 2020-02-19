@@ -60,7 +60,7 @@ public:
         _data[i] = o._data[i];
     }
 
-    return (*this);
+    return *this;
   }
 
   Vec<T> &operator=(Vec<T> &&o) {
@@ -75,7 +75,7 @@ public:
       o._n = 0;
     }
 
-    return this;
+    return *this;
   }
 
   ~Vec() { clear(); }
