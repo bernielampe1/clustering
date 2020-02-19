@@ -147,20 +147,20 @@ public:
   // compute determinant using cofactors
   double determinant_1() const;
 
-  // invert using adjoint matrix
-  Matrix<T> inverse_1() const;
+  // compute determinant using LUP decomp
+  double determinant_2() const;
 
   // solve using kramer's method
   Vec<T> solve_1(const Vec<T> &b) const;
 
-  // compute determinant using LUP decomp
-  double determinant_2() const;
+  // solve using LUP decomp
+  Vec<T> solve_2(const Vec<T> &b) const;
+
+  // invert using adjoint matrix
+  Matrix<T> inverse_1() const;
 
   // invert using LUP decomp
   Matrix<T> inverse_2() const;
-
-  // solve using LUP decomp
-  Vec<T> solve_2(const Vec<T> &b) const;
 };
 
 template<typename T>

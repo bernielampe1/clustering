@@ -200,8 +200,8 @@ Matrix<T> Matrix<T>::decompLUP(Vec<u32> &P) const {
         maxA = 0;
         imax = i;
 
-        for(k = i; k < _rows; i++) {
-            if ((absA = fabs(temp._data[k * _cols + i])) > maxA) {
+        for(k = i; k < _rows; k++) {
+            if ((absA = ABS(temp._data[k * _cols + i])) > maxA) {
                 maxA = absA;
                 imax = k;
             }
@@ -279,7 +279,7 @@ template <typename T> Matrix<T> Matrix<T>::inverse_1() const {
   if (abs(det) < tol)
     throw Exception("determinant is zero for inverse operation");
 
-  return adjoint() /= det;
+  return (adjoint() /= det) * -1;
 }
 
 template <typename T> Vec<T> Matrix<T>::solve_1(const Vec<T> &b) const {
@@ -330,16 +330,16 @@ template <typename T> Matrix<T> Matrix<T>::inverse_2() const {
   Matrix<T> lup = decompLUP(P);
   Matrix<T> inv(_rows, _cols);
 
-  for(u32 j = 0; j < _rows; j++) {
-    for(u32 i = 0; i < _cols; i++) { 
+  for(s32 j = 0; j < _rows; j++) {
+    for(s32 i = 0; i < _cols; i++) { 
       inv._data[i * _cols + j] = (P[i] == j) ? 1 : 0;
 
-      for(u32 k = 0; k < i; k++)
+      for(s32 k = 0; k < i; k++)
         inv._data[i * _cols + j] -= _data[i * _cols + k] * inv._data[k * _cols + j];
     }
 
-    for(u32 i = _rows - 1; i >= 0; i--) {
-      for(u32 k = i + 1; k < _rows; k++)
+    for(s32 i = _rows - 1; i >= 0; i--) {
+      for(s32 k = i + 1; k < _rows; k++)
           inv._data[i * _cols + j] -= _data[i * _cols + k] * inv._data[k * _cols + j];
 
       inv._data[i * _cols + j] /= _data[i * _cols + i];
@@ -367,8 +367,8 @@ template <typename T> Vec<T> Matrix<T>::solve_2(const Vec<T> &b) const {
         x[i] -= lup._data[i * _cols + k] * x[k];
   }
 
-  for(u32 i = _rows - 1; i >= 0; i--) {
-    for(u32 k = i + 1; k < _rows; k++)
+  for(s32 i = _rows - 1; i >= 0; i--) {
+    for(s32 k = i + 1; k < _rows; k++)
       x[i] -= lup._data[i * _cols + k] * x[k];
 
     x[i] /= lup._data[i * _cols + i];

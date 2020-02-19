@@ -12,5 +12,14 @@ int main(int argc, char **argv) {
   // render vectors into new image
   // write output color image with clusters
 
+  u8 nclusters;
+  Vec<u8> labels;
+  Matrix<float> pts;
+  Matrix<float> clusters;
+
+  if (cluster("kmeans", pts, labels, nclusters, clusters)) {
+    throw Exception("kmeans cluster failed");
+  }
+
   return 0;
 }

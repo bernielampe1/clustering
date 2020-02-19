@@ -1,6 +1,8 @@
 #ifndef __TYPES_H__
 #define __TYPES_H__
 
+#define ABS(N) ((N < 0) ? (-N) : (N))
+
 // signed primitive types
 typedef char s8;
 typedef short s16;

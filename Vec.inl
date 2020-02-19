@@ -12,7 +12,7 @@ template <typename T> T Vec<T>::prod() const {
 
 template <typename T> Vec<T> Vec<T>::abs() const {
     Vec<T> v(_n);
-    for(u32 i = 0; i < _n; i++) v._data[i] = _data[i] < 0 ? _data[i] * -1 : _data[i];
+    for(u32 i = 0; i < _n; i++) v._data[i] = ABS(_data[i]);
     return v;
 }
 
