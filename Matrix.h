@@ -67,15 +67,31 @@ public:
 
   void init(const u32 r, const u32 c, const T v = 0) {
     T *temp = new T[r * c];
-
-    if (_data)
-      clear();
+    if (_data) clear();
     _rows = r;
     _cols = c;
     _data = temp;
 
     for (u32 i = 0; i < _rows * _cols; i++)
       _data[i] = v;
+  }
+
+  void zeros(const u32 r, const u32 c) {
+    init(r, c, 0);
+  }
+
+  void ones(const u32 r, const u32 c) {
+    init(r, c, 1);
+  }
+
+  void zero() {
+    for (u32 i = 0; i < _rows * _cols; i++)
+      _data[i] = 0;
+  }
+
+  void one() {
+    for (u32 i = 0; i < _rows * _cols; i++)
+      _data[i] = 1;
   }
 
   void clear() {
@@ -87,10 +103,16 @@ public:
 
   /* accessors */
   u32 rows() const { return (_rows); }
-
   u32 cols() const { return (_cols); }
 
-  T &get(u32 r, u32 c) const { return (_data[r * _cols + c]); }
+  T get(const u32 r, const u32 c) const { return (_data[r * _cols + c]); }
+  void set(const u32 r, const u32 c, const T &v) { _data[r * _cols + c] = v; }
+
+  Vec<T> getrow(const u32 r) const;
+  void setrow(const u32 r, const Vec<T> &v);
+
+  Vec<T> getcol(const u32 c) const;
+  void setcol(const u32 c, const Vec<T> &v);
 
   T &operator[](u32 i) { return (_data[i]); }
 

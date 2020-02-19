@@ -1,3 +1,27 @@
+template <typename T> Vec<T> Matrix<T>::getrow(const u32 r) const {
+  Vec<T> v(_cols);
+  for(u32 c = 0; c < _cols; c++) v[c] = _data[r * _cols + c];
+  return v;
+}
+
+template <typename T> Vec<T> Matrix<T>::getcol(const u32 c) const {
+  Vec<T> v(_rows);
+  for(u32 r = 0; r < _rows; r++) v[r] = _data[r * _cols + c];
+  return v;
+}
+
+template <typename T> void Matrix<T>::setrow(const u32 r, const Vec<T> &v) {
+    if (v.len() != _cols)
+        throw Exception("cannot set row with incompatible sized vector");
+    for(u32 c = 0; c < _cols; c++) _data[r * _cols + c] = v[c];
+}
+
+template <typename T> void Matrix<T>::setcol(const u32 c, const Vec<T> &v) {
+    if (v.len() != _rows)
+        throw Exception("cannot set row with incompatible sized vector");
+    for(u32 r = 0; r < _rows; r++) _data[r * _cols + c] = v[r];
+}
+
 template <typename T> Matrix<T> Matrix<T>::operator+(const T &c) const {
   Matrix<T> temp(_rows, _cols);
   for (u32 i = 0; i < _rows * _cols; i++)

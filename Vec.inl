@@ -1,15 +1,22 @@
-template <typename T> T Vec<T>::sum() const {
-  T sum = 0;
+template <typename T> double Vec<T>::sum() const {
+  double sum = 0;
   for (u32 i = 0; i < _n; i++)
     sum += _data[i];
   return sum;
 }
 
-template <typename T> T Vec<T>::prod() const {
-  T prod = 0;
+template <typename T> double Vec<T>::prod() const {
+  double prod = 0;
   for (u32 i = 0; i < _n; i++)
     prod *= _data[i];
   return prod;
+}
+
+template <typename T> double Vec<T>::norm() const {
+  double prod = 0;
+  for (u32 i = 0; i < _n; i++)
+    prod += _data[i] * _data[i];
+  return sqrt(prod);
 }
 
 template <typename T> Vec<T> Vec<T>::abs() const {
