@@ -1,14 +1,6 @@
-implement determinant for Matrix
-
-unit tests for Vec, Matrix and Image
-
-implement kmeans as first algo and write test
-
 fill out main.cc, args, reading images, clustering, rendering output
 
-implement dbscan, fuzzy cmeans, em, mean shift, spectral clustering, normalized cuts...
-
-write tests for all algos
+implement kmeans, dbscan, fuzzy cmeans, em, mean shift, spectral clustering, normalized cuts...
 
 add clustering implementations with kernels
 
