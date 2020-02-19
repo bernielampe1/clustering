@@ -1,5 +1,1 @@
-implement kmeans, dbscan, fuzzy cmeans, em, mean shift, spectral clustering, normalized cuts...
-
-add clustering implementations with kernels
-
-add multi-threaded clustering implementations
+implement dbscan, fuzzy cmeans, em, mean shift, spectral clustering, normalized cuts, kernel algorithms and add tests for all

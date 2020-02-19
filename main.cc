@@ -2,6 +2,7 @@
 
 using namespace std;
 
+#include "cmap.h"
 #include "cluster.h"
 
 void readPts(const string fname, u32 &rows, u32 &cols, Matrix<float> &pts) {
@@ -87,18 +88,22 @@ int main(int argc, char **argv) {
     throw Exception("unknown clustering algo");
   }
 
+  // write out colorized label image
+  Image<RGB_t> labelImage(rows, cols);
   if (ext == "pts") {
-    Image<u8> labelImage(rows, cols);
     for(u32 i = 0; i < labels.len(); i++) {
       u32 r = pts.get(i, 0);
       u32 c = pts.get(i, 1);
-      labelImage.set(r, c, labels[i]);
+      u32 l = labels[i];
+      labelImage.set(r, c, jetMap[l * int(255/nclusters)]);
     }
-    labelImage.writeToFile(fname + "_out.pgm");
   } else {
-    Image<u8> labelImage(labels, rows, cols);
-    labelImage.writeToFile(fname + "_out.pgm");
+    for(u32 i = 0; i < labels.len(); i++) {
+      u32 l = labels[i];
+      labelImage.set(i, jetMap[l * int(255/nclusters)]);
+    }
   }
+  labelImage.writeToFile(fname + "_out.ppm");
 
   return 0;
 }

@@ -11,6 +11,7 @@
 struct Vec2f_t {
   float v[2];
   Vec2f_t() { v[0] = v[1] = 0.0; }
+  Vec2f_t(float _v0, float _v1) { v[0] = _v0; v[1] = _v1; }
   float &operator[](const u32 i) { return (v[i]); }
   u32 len() { return 2; }
 };
@@ -19,6 +20,7 @@ struct Vec2f_t {
 struct Vec3f_t {
   float v[3];
   Vec3f_t() { v[0] = v[1] = v[2] = 0.0; }
+  Vec3f_t(float _v0, float _v1, float _v2) { v[0] = _v0; v[1] = _v1; v[2] = _v2; }
   float &operator[](const u32 i) { return (v[i]); }
   u32 len() { return 3; }
 };
@@ -27,13 +29,22 @@ struct Vec3f_t {
 struct Vec4f_t {
   float v[4];
   Vec4f_t() { v[0] = v[1] = v[2] = v[3] = 0.0; }
+  Vec4f_t(float _v0, float _v1, float _v2, float _v3) { v[0] = _v0; v[1] = _v1; v[2] = _v2; v[3] = _v3; }
   float &operator[](const u32 i) { return (v[i]); }
   u32 len() { return 4; }
 };
 
+/* Abstraction of a 3-D float vector */
+struct Vec3i_t {
+  u8 v[3];
+  Vec3i_t() { v[0] = v[1] = v[2] = 0.0; }
+  Vec3i_t(u8 _v0, u8 _v1, u8 _v2) { v[0] = _v0; v[1] = _v1; v[2] = _v2; }
+  u8 &operator[](const u32 i) { return (v[i]); }
+  u32 len() { return 3; }
+};
+
 // for pixels
-typedef struct Vec3f_t RGB_t;
-typedef struct Vec4f_t RGBA_t;
+typedef struct Vec3i_t RGB_t;
 
 /* Abstraction for large vectors */
 template <typename T> class Vec {
