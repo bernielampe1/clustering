@@ -229,7 +229,7 @@ Matrix<T> Matrix<T>::decompLUP(Vec<u32> &P) const {
         }
 
         for(j = i + 1; j < _rows; j++) {
-            temp._data[j * _cols + i] /= temp._data[i * _cols + j];
+            temp._data[j * _cols + i] /= temp._data[i * _cols + i];
 
             for(k = i + 1; k < _rows; k++)
                 temp._data[j * _cols + k] -= temp._data[j * _cols + i] *
@@ -315,7 +315,7 @@ template <typename T> double Matrix<T>::determinant_2() const {
   Matrix<T> lup = decompLUP(P);
 
   double det = lup._data[0];
-  for(u32 i = 1; i < _rows; i++) det *= _data[i * _cols + i];
+  for(u32 i = 1; i < _rows; i++) det *= lup._data[i * lup._cols + i];
 
   if ((P[_rows] - _rows) % 2 != 0) det *= -1;
 
@@ -335,14 +335,14 @@ template <typename T> Matrix<T> Matrix<T>::inverse_2() const {
       inv._data[i * _cols + j] = (P[i] == j) ? 1 : 0;
 
       for(s32 k = 0; k < i; k++)
-        inv._data[i * _cols + j] -= _data[i * _cols + k] * inv._data[k * _cols + j];
+        inv._data[i * _cols + j] -= lup._data[i * _cols + k] * inv._data[k * _cols + j];
     }
 
     for(s32 i = _rows - 1; i >= 0; i--) {
       for(s32 k = i + 1; k < _rows; k++)
-          inv._data[i * _cols + j] -= _data[i * _cols + k] * inv._data[k * _cols + j];
+          inv._data[i * _cols + j] -= lup._data[i * _cols + k] * inv._data[k * _cols + j];
 
-      inv._data[i * _cols + j] /= _data[i * _cols + i];
+      inv._data[i * _cols + j] /= lup._data[i * _cols + i];
     }
   }
 

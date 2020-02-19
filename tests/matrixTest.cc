@@ -12,6 +12,7 @@ int main()
 
     Vec<float> v0(a, 4);
     Vec<float> v1(a, 3);
+    Vec<u32> v2(5);
 
     Matrix<float> m0(a, 4, 4);
     Matrix<float> m1(a, 4, 4);
@@ -62,9 +63,9 @@ int main()
     cout << m5.inverse_1() << endl;
     cout << m5.solve_1(v0) << endl;
 
-    cout << m5.determinant_2() << endl;
-    cout << m5.inverse_2() << endl;
-    cout << m5.solve_2(v0) << endl;
+    cout << m5.determinant_2() << endl << endl;
+    cout << m5.inverse_2() << endl << endl;
+    cout << m5.solve_2(v0) << endl << endl;
 
     return 0;
 }
