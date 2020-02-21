@@ -3,11 +3,27 @@
 
 #include<fstream>
 
-#include "cmap.h"
 #include "Exception.h"
 #include "Image.h"
 #include "Matrix.h"
 #include "Vec.h"
+#include "cmap.h"
+#include "types.h"
+
+#define ABS(N) ((N < 0) ? (-N) : (N))
+
+Params_t parse_args(int argc, char **argv) {
+  Params_t params;
+
+  for(s32 i = 0; i < argc; i++) {
+    char *p = argv[i];
+    if (strlen(p) > 2 && p[0] == '-' && p[1] == '-' && i < argc - 1) {
+      params[p+2] = argv[++i];
+    }
+  }
+
+  return params;
+}
 
 void readPts(const std::string &fname, u32 &rows, u32 &cols, Matrix<float> &pts) {
   std::ifstream ifile;
@@ -61,7 +77,7 @@ void writeLabelImage(
       labelImage.set(i, jetMap[l * int(255/nclusters)]);
     }
   }
-  labelImage.writeToFile(fname + "_out.ppm");
+  labelImage.writeToFile(fname);
 }
 
 #endif // __UTILS_H__

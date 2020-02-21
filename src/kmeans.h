@@ -4,7 +4,7 @@
 #include<limits>
 
 template <typename S, typename T>
-void keamns(const Matrix<S> &pts, Vec<u8> &labels, u8 &nclusters, Matrix<T> &clusters) {
+void kmeans(const Matrix<S> &pts, const u32 nclusters, Vec<u8> &labels, Matrix<T> &clusters) {
   bool change;
   double mind, d;
   u8 minl;

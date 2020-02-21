@@ -2,13 +2,13 @@
 
 for i in kmeans
 do
-    ../src/cluster cluster0.pts $i 3
-    ../src/cluster cluster1.pts $i 7
-    ../src/cluster cluster2.pts $i 2
-    ../src/cluster cluster3.pts $i 2
-    ../src/cluster cluster4.pts $i 3
-    ../src/cluster cluster5.pts $i 3
-    ../src/cluster cluster6.pts $i 2
-    ../src/cluster ./us.ppm $i 10
+    ../src/cluster --i cluster0.pts --algo $i --nclusters 3 --o cluster0_${i}.ppm
+    ../src/cluster --i cluster1.pts --algo $i --nclusters 7 --o cluster1_${i}.ppm
+    ../src/cluster --i cluster2.pts --algo $i --nclusters 2 --o cluster2_${i}.ppm
+    ../src/cluster --i cluster3.pts --algo $i --nclusters 2 --o cluster3_${i}.ppm
+    ../src/cluster --i cluster4.pts --algo $i --nclusters 3 --o cluster4_${i}.ppm
+    ../src/cluster --i cluster5.pts --algo $i --nclusters 3 --o cluster5_${i}.ppm
+    ../src/cluster --i cluster6.pts --algo $i --nclusters 2 --o cluster6_${i}.ppm
+#    ../src/cluster --i us.ppm --algo $i --nclusters 10 --o us_out.pgm
 done
 

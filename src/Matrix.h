@@ -2,6 +2,7 @@
 #define __MATRIX_H__
 
 #include<iostream>
+#include<random>
 
 #include "Exception.h"
 #include "Vec.h"
@@ -84,6 +85,16 @@ public:
     init(r, c, 1);
   }
 
+  void rand(const u32 r, const u32 c) {
+    init(r, c, 0);
+    // TODO
+  }
+
+  void randn(const u32 r, const u32 c) {
+    init(r, c, 0);
+    // TODO
+  }
+
   void zero() {
     for (u32 i = 0; i < _rows * _cols; i++)
       _data[i] = 0;
@@ -92,6 +103,14 @@ public:
   void one() {
     for (u32 i = 0; i < _rows * _cols; i++)
       _data[i] = 1;
+  }
+
+  void rand() {
+    // TODO
+  }
+
+  void randn() {
+    // TODO
   }
 
   void clear() {
