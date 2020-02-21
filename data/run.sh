@@ -9,6 +9,6 @@ do
     ../src/cluster --i cluster4.pts --algo $i --nclusters 3 --o cluster4_${i}.ppm
     ../src/cluster --i cluster5.pts --algo $i --nclusters 3 --o cluster5_${i}.ppm
     ../src/cluster --i cluster6.pts --algo $i --nclusters 2 --o cluster6_${i}.ppm
-#    ../src/cluster --i us.ppm --algo $i --nclusters 10 --o us_out.pgm
+    ../src/cluster --i us.ppm --algo $i --nclusters 10 --o us_out.ppm
 done
 

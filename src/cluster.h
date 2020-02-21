@@ -40,7 +40,8 @@ void cluster(const Params_t &params, const Matrix<S> &pts, Vec<u8> &labels, Matr
 template <typename S = float, typename T = float>
 void cluster(Params_t &params, const Matrix<S> &pts, Vec<u8> &labels, Matrix<T> &clusters) {
   // outer switch for algorithm type
-  if (params["algo"] == "kmeans") {
+  std::string algo = params["algo"];
+  if (algo == "kmeans") {
 
     // check params for kmeans algo
     if (params.find("nclusters") == params.end())
@@ -48,13 +49,16 @@ void cluster(Params_t &params, const Matrix<S> &pts, Vec<u8> &labels, Matrix<T> 
 
     kmeans(pts, std::stoi(params["nclusters"]), labels, clusters);
   }
-  else if (params["algo"] == "dbscan") {
+  else if (algo == "dbscan") {
 
     // check params for dbscan algo
     if (params.find("radius") == params.end())
       throw(Exception("dbscan requires --radius <float>"));
 
-    dbscan(pts, std::stof(params["radius"]), labels, clusters);
+    if (params.find("minpts") == params.end())
+      throw(Exception("dbscan requires --minpts <int>"));
+
+    dbscan(pts, std::stof(params["radius"]), std::stoi(params["minpts"]), labels, clusters);
   }
   else {
     throw(Exception("unknown clustering algorithm"));
