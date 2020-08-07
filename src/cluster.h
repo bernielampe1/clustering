@@ -2,7 +2,6 @@
 #define __CLUSTER_H__
 
 #include<string>
-#include<vector>
 
 #include"Image.h"
 #include"Matrix.h"
